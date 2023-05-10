@@ -1,0 +1,29 @@
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# JavaScript
+[*.js]
+# 支持一些 JS 新特性
+parser = babel-eslint
+
+# TypeScript
+[*.ts]
+parser = @typescript-eslint/parser
+plugins = @typescript-eslint/eslint-plugin
+
+# Vue
+[*.vue]
+parser = vue-eslint-parser
+plugins = vue
+
+# JSON
+[*.json]
+indent_size = 2

@@ -26,7 +26,7 @@ yarn-error.log*
 *.sw?
 .mvn
 !.mvn/maven-wrapper.properties
-
+dist/
 src/main/resources/static
 src/main/resources/templates
 target

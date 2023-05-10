@@ -1,4 +1,4 @@
-@import "~@7polo/kityminder-core/dist/kityminder.core.css";
+@import "@7polo/kityminder-core/dist/kityminder.core.css";
 @import "navigator.scss";
 @import "hotbox.scss";
 
@@ -34,11 +34,10 @@
   line-height: 1.4em;
   min-height: 1.4em;
   box-sizing: border-box;
-  overflow: hidden;
   word-break: break-all;
   word-wrap: break-word;
   border: none;
-  -webkit-user-select: text;
+  user-select: text;
   pointer-events: none;
   opacity: 0;
   z-index: -1000;

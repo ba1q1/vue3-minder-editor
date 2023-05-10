@@ -1,57 +1,38 @@
-<template lang="html">
+<template>
   <div class="menu-container">
-    <expand/>
-    <selection/>
-    <insert-box/>
-    <move-box :move-enable="moveEnable"/>
-    <edit-del/>
+    <expand />
+    <selection />
+    <insert-box />
+    <move-box :move-enable="props.moveEnable" />
+    <edit-del />
     <sequence-box
-      v-if="sequenceEnable"
-      :prefix="priorityPrefix"
-      :priority-count="priorityCount"
-      :priority-disable-check="priorityDisableCheck"
-      :priority-start-with-zero="priorityStartWithZero"
+      v-if="props.sequenceEnable"
+      :priority-prefix="props.priorityPrefix"
+      :priority-count="props.priorityCount"
+      :priority-disable-check="props.priorityDisableCheck"
+      :priority-start-with-zero="props.priorityStartWithZero"
     />
-    <progress-box v-if="progressEnable"/>
+    <progress-box v-if="props.progressEnable" />
     <tag-box
-      v-if="tagEnable"
-      :tags="tags"
-      :tag-disable-check="tagDisableCheck"
-      :tag-edit-check="tagEditCheck"
-      :distinct-tags="distinctTags"
+      v-if="props.tagEnable"
+      :tags="props.tags"
+      :tag-disable-check="props.tagDisableCheck"
+      :tag-edit-check="props.tagEditCheck"
+      :distinct-tags="props.distinctTags"
     />
   </div>
 </template>
 
-<script>
-import insertBox from './insertBox'
-import moveBox from './moveBox'
-import editDel from './editDel'
-import sequenceBox from './sequenceBox'
-import progressBox from './progressBox'
-import expand from './expand'
-import selection from './selection'
-import TagBox from "./tagBox";
-import {editMenuProps, priorityProps, tagProps} from "../../../props";
-import Locale from '/src/mixins/locale';
+<script lang="ts" name="editMenu" setup>
+import insertBox from './insertBox.vue';
+import moveBox from './moveBox.vue';
+import editDel from './editDel.vue';
+import sequenceBox from './sequenceBox.vue';
+import progressBox from './progressBox.vue';
+import expand from './expand.vue';
+import selection from './selection.vue';
+import TagBox from './tagBox.vue';
+import { editMenuProps, priorityProps, tagProps } from '@/props';
 
-export default {
-  name: 'editMenu',
-  mixins: [Locale],
-  components: {
-    TagBox,
-    insertBox,
-    moveBox,
-    editDel,
-    sequenceBox,
-    progressBox,
-    expand,
-    selection
-  },
-  props: {
-    ...editMenuProps,
-    ...priorityProps,
-    ...tagProps
-  },
-}
+const props = defineProps({ ...editMenuProps, ...priorityProps, ...tagProps });
 </script>

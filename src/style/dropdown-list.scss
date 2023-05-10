@@ -19,7 +19,7 @@
   }
   @for $i from 1 through 6 {
     .mold-#{$i} {
-      background-position: (1-$i) * 50px 0;
+      background-position: (1 - $i) * 50px 0;
     }
   }
 }

@@ -1,74 +1,58 @@
 <template>
   <div class="main-container">
     <header-menu
-      :sequence-enable="sequenceEnable"
-      :tag-enable="tagEnable"
-      :progress-enable="progressEnable"
-      :priority-count="priorityCount"
-      :priority-prefix="priorityPrefix"
-      :priority-start-with-zero="priorityStartWithZero"
-      :tags="tags"
-      :move-enable="moveEnable"
-      :tag-edit-check="tagEditCheck"
-      :tag-disable-check="tagDisableCheck"
-      :priority-disable-check="priorityDisableCheck"
-      :distinct-tags="distinctTags"
-      :default-mold="defaultMold"
-      @moldChange="handleMoldChange"
+      :sequence-enable="props.sequenceEnable"
+      :tag-enable="props.tagEnable"
+      :progress-enable="props.progressEnable"
+      :priority-count="props.priorityCount"
+      :priority-prefix="props.priorityPrefix"
+      :priority-start-with-zero="props.priorityStartWithZero"
+      :tags="props.tags"
+      :move-enable="props.moveEnable"
+      :tag-edit-check="props.tagEditCheck"
+      :tag-disable-check="props.tagDisableCheck"
+      :priority-disable-check="props.priorityDisableCheck"
+      :distinct-tags="props.distinctTags"
+      :default-mold="props.defaultMold"
+      @mold-change="handleMoldChange"
     />
     <main-editor
-      :disabled="disabled"
-      :sequence-enable="sequenceEnable"
-      :tag-enable="tagEnable"
-      :move-enable="moveEnable"
-      :progress-enable="progressEnable"
-      :import-json="importJson"
-      :height="height"
-      :tags="tags"
-      :priority-count="priorityCount"
-      :priority-prefix="priorityPrefix"
-      :priority-start-with-zero="priorityStartWithZero"
-      @afterMount="$emit('afterMount')"
-      @save="save"/>
+      :disabled="props.disabled"
+      :sequence-enable="props.sequenceEnable"
+      :tag-enable="props.tagEnable"
+      :move-enable="props.moveEnable"
+      :progress-enable="props.progressEnable"
+      :import-json="props.importJson"
+      :height="props.height"
+      :tags="props.tags"
+      :distinct-tags="props.distinctTags"
+      :tag-edit-check="props.tagEditCheck"
+      :tag-disable-check="props.tagDisableCheck"
+      :priority-count="props.priorityCount"
+      :priority-prefix="props.priorityPrefix"
+      :priority-start-with-zero="props.priorityStartWithZero"
+      @after-mount="emit('afterMount')"
+      @save="save"
+    />
   </div>
 </template>
+<script lang="ts" name="minderEditor" setup>
+import headerMenu from './main/header.vue';
+import mainEditor from './main/mainEditor.vue';
+import { editMenuProps, mainEditorProps, moleProps, priorityProps, tagProps } from '../props';
 
-<script>
-import headerMenu from './main/header'
-import mainEditor from './main/mainEditor'
-import {editMenuProps, mainEditorProps, moleProps, priorityProps, tagProps} from "../props";
-import Locale from '/src/mixins/locale';
+const emit = defineEmits<{
+  (e: 'moldChange', data: number): void;
+  (e: 'save', data: Record<string, any>): void;
+  (e: 'afterMount'): void;
+}>();
 
-export default {
-  name: 'minderEditor',
-  mixins: [Locale],
-  components: {
-    headerMenu,
-    mainEditor
-  },
-  data() {
-    return {
-      minder: {}
-    }
-  },
-  methods: {
-    handleMoldChange(data) {
-      this.$emit('moldChange', data);
-    },
-    save(data) {
-      this.$emit('save', data);
-    },
-  },
-  props: {
-    ...editMenuProps,
-    ...priorityProps,
-    ...tagProps,
-    ...moleProps,
-    ...mainEditorProps
-  },
+const props = defineProps({ ...editMenuProps, ...mainEditorProps, ...moleProps, ...priorityProps, ...tagProps });
+
+function handleMoldChange(data: number) {
+  emit('moldChange', data);
 }
-
+function save(data: Record<string, any>) {
+  emit('save', data);
+}
 </script>
-
-<style scoped>
-</style>

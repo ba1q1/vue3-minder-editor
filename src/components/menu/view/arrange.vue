@@ -1,35 +1,33 @@
 <template>
   <div class="arrange-group">
-    <div class="arrange menu-btn" @click="resetlayout" :disabled="disabled">
-      <span class="tab-icons"></span>
+    <div class="arrange menu-btn" :disabled="disabled" @click="resetlayout">
+      <span class="tab-icons" />
       <span class="label">
-          {{ t('minder.menu.arrange.arrange_layout') }}
-        </span>
+        {{ t('minder.menu.arrange.arrange_layout') }}
+      </span>
     </div>
   </div>
 </template>
 
-<script>
-import Locale from '/src/mixins/locale';
+<script lang="ts" name="Arrange" setup>
+import { computed } from 'vue';
+import { useLocale } from '@/hooks';
 
-export default {
-  name: 'arrange',
-  mixins: [Locale],
-  computed: {
-    disabled() {
-      try {
-        if (!minder) return false;
-      } catch (e) {
-        // 如果window的还没挂载minder，先捕捉undefined异常
-        return false
-      }
-      return minder && minder.queryCommandState && minder.queryCommandState('resetlayout') === -1;
-    }
-  },
-  methods: {
-    resetlayout() {
-      minder.queryCommandState('resetlayout') === -1 || minder.execCommand('resetlayout')
-    }
+const { t } = useLocale();
+
+const disabled = computed(() => {
+  try {
+    if (!window.minder) return false;
+  } catch (e) {
+    // 如果window的还没挂载minder，先捕捉undefined异常
+    return false;
+  }
+  return window.minder.queryCommandState && window.minder.queryCommandState('resetlayout') === -1;
+});
+
+function resetlayout() {
+  if (window.minder.queryCommandState('resetlayout') !== -1) {
+    window.minder.execCommand('resetlayout');
   }
 }
 </script>

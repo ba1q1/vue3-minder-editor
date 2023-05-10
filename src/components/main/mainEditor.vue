@@ -1,151 +1,135 @@
 <template>
-  <div class="minder-container" :style="{height: height + 'px'}">
-    <el-button :disabled="disabled" class="save-btn" @click="save" type="primary">{{t('minder.main.main.save')}}</el-button>
-    <navigator/>
+  <div ref="mec" class="minder-container" :style="{ height: `${props.height}px` }">
+    <el-button :disabled="props.disabled" class="save-btn" type="primary" @click="save">{{
+      t('minder.main.main.save')
+    }}</el-button>
+    <navigator />
   </div>
 </template>
 
-<script>
-  import {editMenuProps, mainEditorProps, priorityProps} from "../../props";
-import Navigator from "./navigator";
-import {markChangeNode} from "../../script/tool/utils";
-import Locale from '/src/mixins/locale';
-export default {
-  components: {Navigator},
-  mixins: [Locale],
-  props: {
-    ...editMenuProps,
-    ...mainEditorProps,
-    ...priorityProps,
-    tags: Array
-  },
-  data() {
-    return {
-      minder: {}
-    }
-  },
-  mounted() {
-    let Editor = require('../../script/editor');
-    let el = this.$el;
-    let editor = window.editor = new Editor(el, this.editMenuProps);
-    if (this.importJson) {
-      editor.minder.importJson(this.importJson);
-    }
-    window.minder = window.km = editor.minder;
-    window.minderEditor = editor;
-    window.minder.moveEnable = this.moveEnable;
+<script lang="ts" name="minderContainer" setup>
+import { onMounted, ref } from 'vue';
+import Navigator from './navigator.vue';
+import { markChangeNode } from '../../script/tool/utils';
+import { useLocale } from '@/hooks';
+import Editor from '@/script/editor';
+import { editMenuProps, mainEditorProps, priorityProps, tagProps } from '@/props';
 
-    window.minder.on('preExecCommand', function (env) {
-      let selectNodes = env.minder.getSelectedNodes();
-      let notChangeCommands = new Set(['camera', 'copy', 'expand', 'expandToLevel', 'hand',
-        'layout', 'template', 'theme', 'zoom', 'zoomIn', 'zoomOut', 'append', 'appendchildnode', 'appendsiblingnode'])
-      if (selectNodes && !notChangeCommands.has(env.commandName.toLocaleLowerCase())) {
-        selectNodes.forEach((node) => {
-            markChangeNode(node);
-        })
-      }
-      if (env.commandName === 'movetoparent') {
-        setTimeout(() => {
-          let targetNode = minder.getSelectedNode();
-          targetNode.parent.renderTree();
-        }, 100);
-      }
-    });
+import type { Ref } from 'vue';
 
-    this.handlePriorityButton();
-    this.handleTagButton();
-    this.$emit('afterMount');
-  },
-  computed: {
-    editMenuProps() {
-      let sequenceEnable = this.sequenceEnable;
-      let tagEnable = this.tagEnable;
-      let progressEnable = this.progressEnable;
-      let moveEnable = this.moveEnable;
-      return {
-        sequenceEnable,
-        tagEnable,
-        progressEnable,
-        moveEnable
-      }
-    }
-  },
-  methods: {
-    save() {
-      this.$emit('save', minder.exportJson());
-    },
-    handlePriorityButton() {
-      let priorityPrefix = this.priorityPrefix;
-      let priorityStartWithZero = this.priorityStartWithZero;
-      let start = priorityStartWithZero ? 0 : 1;
-      let res = '';
-      for (let i = 0; i < this.priorityCount; i++) {
-        res += start++;
-      }
-      let priority = window.minder.hotbox.state('priority');
-      res.replace(/./g, function (p) {
-        priority.button({
-          position: 'ring',
-          label: priorityPrefix + p,
-          key: p,
-          action: function () {
-            let pVal = parseInt(p);
-            minder.execCommand('Priority', priorityStartWithZero ? (pVal + 1) : pVal);
-          }
-        });
-      });
-    },
-    handleTagButton() {
-      let tag = window.minder.hotbox.state('tag');
-      this.tags.forEach((item) => {
-        tag.button({
-          position: 'ring',
-          label: item,
-          key: item,
-          action: function () {
-            minder.execCommand('resource', item);
-          }
-        });
-      });
-    },
-    handleMoveButton() {
-      let priorityPrefix = this.priorityPrefix;
-      let priorityStartWithZero = this.priorityStartWithZero;
-      let start = priorityStartWithZero ? 0 : 1;
-      let res = '';
-      for (let i = 0; i < this.priorityCount; i++) {
-        res += start++;
-      }
-      res.replace(/./g, function (p) {
-        priority.button({
-          position: 'ring',
-          label: priorityPrefix + p,
-          key: p,
-          action: function () {
-            let pVal = parseInt(p);
-            minder.execCommand('Priority', priorityStartWithZero ? (pVal + 1) : pVal);
-          }
-        });
-      });
-    }
-  },
+const { t } = useLocale();
+
+const props = defineProps({ ...editMenuProps, ...mainEditorProps, ...tagProps, ...priorityProps });
+
+const emit = defineEmits({
+  afterMount: () => ({}),
+  save: (json) => json,
+});
+
+const mec: Ref<HTMLDivElement | null> = ref(null);
+
+function save() {
+  emit('save', window.minder.exportJson());
 }
+function handlePriorityButton() {
+  const { priorityPrefix } = props;
+  const { priorityStartWithZero } = props;
+  let start = priorityStartWithZero ? 0 : 1;
+  let res = '';
+  for (let i = 0; i < props.priorityCount; i++) {
+    res += start++;
+  }
+  const priority = window.minder.hotbox.state('priority');
+  res.replace(/./g, function (p) {
+    priority.button({
+      position: 'ring',
+      label: priorityPrefix + p,
+      key: p,
+      action() {
+        const pVal = parseInt(p, 10);
+        window.minder.execCommand('Priority', priorityStartWithZero ? pVal + 1 : pVal);
+      },
+    });
+    // 需要返回字符串
+    return '';
+  });
+}
+function handleTagButton() {
+  const tag = window.minder.hotbox.state('tag');
+  props.tags?.forEach((item) => {
+    tag.button({
+      position: 'ring',
+      label: item,
+      key: item,
+      action() {
+        window.minder.execCommand('resource', item);
+      },
+    });
+  });
+}
+
+onMounted(() => {
+  window.editor = new Editor(mec.value, {
+    sequenceEnable: props.sequenceEnable,
+    tagEnable: props.tagEnable,
+    progressEnable: props.progressEnable,
+    moveEnable: props.moveEnable,
+  });
+  const { editor } = window;
+  if (Object.keys(props.importJson || {}).length > 0) {
+    editor.minder.importJson(props.importJson);
+  }
+  window.km = editor.minder;
+  window.minder = window.km;
+  window.minderEditor = editor;
+  window.minder.moveEnable = props.moveEnable;
+
+  window.minder.on('preExecCommand', (env: any) => {
+    const selectNodes = env.minder.getSelectedNodes();
+    const notChangeCommands = new Set([
+      'camera',
+      'copy',
+      'expand',
+      'expandToLevel',
+      'hand',
+      'layout',
+      'template',
+      'theme',
+      'zoom',
+      'zoomIn',
+      'zoomOut',
+      'append',
+      'appendchildnode',
+      'appendsiblingnode',
+    ]);
+    if (selectNodes && !notChangeCommands.has(env.commandName.toLocaleLowerCase())) {
+      selectNodes.forEach((node: any) => {
+        markChangeNode(node);
+      });
+    }
+    if (env.commandName === 'movetoparent') {
+      setTimeout(() => {
+        const targetNode = window.minder.getSelectedNode();
+        targetNode.parent.renderTree();
+      }, 100);
+    }
+  });
+
+  handlePriorityButton();
+  handleTagButton();
+  emit('afterMount');
+});
 </script>
 
 <style lang="scss">
-  @import "../../style/editor.scss";
-</style>
+@import '../../style/editor.scss';
+.save-btn {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+}
 
-<style scoped>
-
-  .save-btn {
-    position: absolute;
-    right: 30px;
-    bottom: 30px;
-  }
-
-  .minder-container {
-    position: relative;
-    /*height: 500px;*/
-  }
+.minder-container {
+  position: relative;
+}
 </style>

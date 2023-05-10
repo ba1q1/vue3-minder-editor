@@ -1,50 +1,37 @@
 <template>
   <div class="menu-container">
-    <mold :default-mold="defaultMold" @moldChange="handleMoldChange"/>
-    <!--  <theme/>-->
-    <arrange/>
-    <styleOperation/>
-    <fontOperation/>
+    <mold :default-mold="props.defaultMold" @mold-change="handleMoldChange" />
+    <arrange />
+    <style-operation />
+    <font-operation />
   </div>
-
 </template>
 
-<script>
-import mold from './mold'
-import theme from './theme'
-import arrange from './arrange'
-import styleOperation from './styleOperation'
-import fontOperation from './fontOperation.vue'
-import {moleProps} from "../../../props";
-import Locale from '/src/mixins/locale';
+<script lang="ts" name="viewMenu" setup>
+import mold from './mold.vue';
+import arrange from './arrange.vue';
+import styleOperation from './styleOperation.vue';
+import fontOperation from './fontOperation.vue';
+import { moleProps } from '@/props';
 
-export default {
-  name: 'viewMenu',
-  mixins: [Locale],
-  components: {
-    mold,
-    theme,
-    arrange,
-    styleOperation,
-    fontOperation
-  },
-  props: {
-    ...moleProps,
-    minder: {}
-  },
-  methods: {
-    handleMoldChange(data) {
-      this.$emit('moldChange', data);
-    }
-  }
+const props = defineProps(moleProps);
+
+const emit = defineEmits<{
+  (e: 'moldChange', data: number): void;
+}>();
+
+function handleMoldChange(data: number) {
+  emit('moldChange', data);
 }
-
 </script>
 
-<style scoped>
-.menu-container >>> i {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
+<style lang="scss">
+.menu-container {
+  height: 60px;
+  i {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+  }
 }
 </style>

@@ -1,63 +1,60 @@
 <template>
-<div class="move-group ">
-  <div class="move-up menu-btn" :disabled="arrangeUpDisabled" @click="execCommand('ArrangeUp')">
-    <i class="tab-icons"></i>
-    <span>{{t('minder.menu.move.up')}}</span>
+  <div class="move-group">
+    <div class="move-up menu-btn" :disabled="arrangeUpDisabled" @click="execCommand('ArrangeUp')">
+      <i class="tab-icons" />
+      <span>{{ t('minder.menu.move.up') }}</span>
+    </div>
+    <div class="move-down menu-btn" :disabled="arrangeDownDisabled" @click="execCommand('ArrangeDown')">
+      <i class="tab-icons" />
+      <span>{{ t('minder.menu.move.down') }}</span>
+    </div>
   </div>
-  <div class="move-down menu-btn" :disabled="arrangeDownDisabled" @click="execCommand('ArrangeDown')">
-    <i class="tab-icons"></i>
-    <span>{{t('minder.menu.move.down')}}</span>
-  </div>
-</div>
 </template>
 
-<script>
-import {isDisableNode} from "../../../script/tool/utils";
-import Locale from '/src/mixins/locale';
-export default {
-  name: 'moveBox',
-  mixins: [Locale],
-  props: ['moveEnable'],
-  data() {
-    return {
-      minder: undefined
-    }
-  },
-  computed: {
-    arrangeUpDisabled() {
-      if (!this.moveEnable) return true;
-      return this.isDisabled('ArrangeUp');
-    },
-    arrangeDownDisabled() {
-      if (!this.moveEnable) return true;
-      return this.isDisabled('ArrangeDown');
-    },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.minder = minder;
-      // 点击节点，触发computed
-    })
-  },
-  methods: {
-    execCommand(command) {
-      minder.queryCommandState(command) === -1 || minder.execCommand(command)
-    },
-    isDisabled(command) {
-      try {
-        if (!this.minder) return false;
-      } catch (e) {
-        // 如果window的还没挂载minder，先捕捉undefined异常
-        return false
-      }
-      if (isDisableNode(this.minder)) {
-        return true;
-      }
-      if (minder && minder.queryCommandState) {
-        return minder.queryCommandState(command) === -1;
-      }
-      return false;
-    }
+<script lang="ts" name="moveBox" setup>
+import { nextTick, onMounted, reactive, ref } from 'vue';
+import { isDisableNode } from '@/script/tool/utils';
+import { useLocale } from '@/hooks';
+
+const { t } = useLocale();
+
+const props = defineProps<{
+  moveEnable: boolean;
+}>();
+
+let minder = reactive<any>({});
+const arrangeUpDisabled = ref(true);
+const arrangeDownDisabled = ref(true);
+
+onMounted(() => {
+  nextTick(() => {
+    minder = window.minder;
+    minder.on('selectionchange', () => {
+      checkDisabled();
+    });
+  });
+});
+
+function checkDisabled() {
+  try {
+    if (Object.keys(minder).length === 0) return false;
+  } catch (e) {
+    // 如果window的还没挂载minder，先捕捉undefined异常
+    return false;
   }
+  const node = minder.getSelectedNode();
+  if (!props.moveEnable || !node || node.parent === null || isDisableNode(minder)) {
+    arrangeUpDisabled.value = true;
+    arrangeDownDisabled.value = true;
+    return;
+  }
+  if (window.minder.queryCommandState) {
+    arrangeUpDisabled.value = window.minder.queryCommandState('ArrangeUp') === -1;
+    arrangeDownDisabled.value = window.minder.queryCommandState('ArrangeDown') === -1;
+  }
+}
+
+function execCommand(command: string) {
+  if (window.minder.queryCommandState(command) !== -1) window.minder.execCommand(command);
 }
 </script>

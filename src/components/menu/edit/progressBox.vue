@@ -2,87 +2,97 @@
   <div class="progress-group">
     <ul>
       <ul :disabled="commandDisabled">
-        <li v-for="(item, index) in items" class="menu-btn" :class="classArray(index)" @click="execCommand(index)" :title="title(index)"></li>
+        <li
+          v-for="(item, index) in items"
+          :key="item.text"
+          class="menu-btn"
+          :class="classArray(index)"
+          :title="title(index)"
+          @click="execCommand(index)"
+        />
       </ul>
     </ul>
   </div>
 </template>
 
-<script>
-import {isDisableNode} from "../../../script/tool/utils";
-import Locale from '/src/mixins/locale';
-export default {
-  name: 'progressBox',
-  mixins: [Locale],
-  data() {
-    return {
-      minder: {},
-      items: [
-        { text: '0' },
-        { text: '1' },
-        { text: '2' },
-        { text: '3' },
-        { text: '4' },
-        { text: '5' },
-        { text: '6' },
-        { text: '7' },
-        { text: '8' },
-        { text: '9' }
-      ]
-    }
-  },
-  computed: {
-    commandDisabled() {
-      let minder = this.minder;
-      if (!minder) return true;
-      minder.on && minder.on('interactchange', function () {
-        this.commandValue = minder.queryCommandValue('progress');
-      });
-      if (isDisableNode(minder)) {
-        return true;
-      }
-      return minder.queryCommandState && minder.queryCommandState('progress') === -1;
-    },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.minder = minder;
-    })
-  },
-  methods: {
-    execCommand(index) {
-      this.commandDisabled || minder.execCommand('progress', index)
-    },
-    classArray(index) {
-      let minder = this.minder;
-      var isActive = minder && minder.queryCommandValue && minder.queryCommandValue('progress') == index;
-      var sequence = 'progress-' + index;
+<script lang="ts" name="progressBox" setup>
+import { computed, nextTick, onMounted, reactive, ref } from 'vue';
+import { isDisableNode } from '@/script/tool/utils';
+import { useLocale } from '@/hooks';
 
-      // 用数组返回多个class
-      var arr = [{
-        'active': isActive
-      }, sequence]
-      return arr
+const { t } = useLocale();
+
+let minder = reactive<{
+  queryCommandState?: Function;
+  execCommand?: Function;
+  queryCommandValue?: Function;
+  on?: Function;
+}>({});
+const commandValue = ref('');
+
+const items = [
+  { text: '0' },
+  { text: '1' },
+  { text: '2' },
+  { text: '3' },
+  { text: '4' },
+  { text: '5' },
+  { text: '6' },
+  { text: '7' },
+  { text: '8' },
+  { text: '9' },
+];
+
+onMounted(() => {
+  nextTick(() => (minder = window.minder));
+});
+
+const commandDisabled = computed(() => {
+  if (Object.keys(minder).length === 0 || !minder.on) return true;
+  minder.on('interactchange', () => {
+    commandValue.value = minder.queryCommandValue && minder.queryCommandValue('progress');
+  });
+  if (isDisableNode(minder)) {
+    return true;
+  }
+  return minder.queryCommandState && minder.queryCommandState('progress') === -1;
+});
+
+function execCommand(index: number) {
+  if (!commandDisabled.value && minder.execCommand) {
+    minder.execCommand('progress', index);
+  }
+}
+
+function classArray(index: number) {
+  const isActive = minder.queryCommandValue && minder.queryCommandValue('progress') === index;
+  const sequence = `progress-${index}`;
+
+  // 用数组返回多个class
+  const arr = [
+    {
+      active: isActive,
     },
-    title(index) {
-      switch (index) {
-        case 0:
-          return this.t('minder.menu.progress.remove_progress');
-        case 1:
-          return this.t('minder.menu.progress.prepare');
-        case 9:
-          return this.t('minder.menu.progress.complete_all');
-        default:
-          return this.t('minder.menu.progress.complete') + (index - 1) + '/8';
-      }
-    }
-  },
-  created() {}
+    sequence,
+  ];
+  return arr;
+}
+function title(index: number) {
+  switch (index) {
+    case 0:
+      return t('minder.menu.progress.remove_progress');
+    case 1:
+      return t('minder.menu.progress.prepare');
+    case 9:
+      return t('minder.menu.progress.complete_all');
+    default:
+      return `${t('minder.menu.progress.complete') + (index - 1)}/8`;
+  }
 }
 </script>
 
-<style scoped>
+<style>
 .progress-group li {
-  background-image: url("../../../assets/minder/iconprogress.png");
+  background-image: url('../../../assets/minder/iconprogress.png');
 }
 </style>

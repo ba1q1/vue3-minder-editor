@@ -69,6 +69,15 @@
     "vite": "^4.3.4",
     "vue-tsc": "^1.6.4"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ba1q1/vue3-minder-editor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ba1q1/vue3-minder-editor/issues",
+    "email": "443543832@qq.com"
+  },
+  "homepage": "https://github.com/ba1q1/vue3-minder-editor",
   "eslintConfig": {
     "extends": "./.eslintrc.js"
   }

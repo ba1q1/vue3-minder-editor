@@ -78,6 +78,7 @@
     "email": "443543832@qq.com"
   },
   "homepage": "https://github.com/ba1q1/vue3-minder-editor",
+  "license": "BSD",
   "eslintConfig": {
     "extends": "./.eslintrc.js"
   }

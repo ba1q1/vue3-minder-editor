@@ -1,8 +1,8 @@
 {
   "name": "vue3-minder-editor",
   "version": "0.0.1",
-  "private": true,
-  "module": "dist/index.esm.js",
+  "module": "dist/vue3-minder-editor.es.js",
+  "keywords": ["minder","vue3","editor"],
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",

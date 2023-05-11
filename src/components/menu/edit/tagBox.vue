@@ -32,7 +32,6 @@ onMounted(() => {
 
 const isDisable = (): boolean => {
   if (Object.keys(minder).length === 0 || !minder.on) return true;
-  const node = minder.getSelectedNode && minder.getSelectedNode();
   if (isDisableNode(minder) && !isTagEnable(minder)) {
     return true;
   }
@@ -60,34 +59,23 @@ function editResource(resourceName: string) {
   if (!resourceName || !/\S/.test(resourceName)) {
     return;
   }
-  let nodes = minder.getSelectedNodes();
-  nodes.forEach((node: any) => {
-    let origin = node.data.resource;
-    if (isDisableForNode(node) && !isTagEnableNode(node)) {
-      return;
-    }
-    if (origin) {
-      let index = origin.indexOf(resourceName);
-      // 先删除排他的标签
-      if (props.distinctTags.indexOf(resourceName) > -1) {
-        for (let i = 0; i < origin.length; i++) {
-          if (props.distinctTags.indexOf(origin[i]) > -1) {
-            origin.splice(i, 1);
-            i--;
-          }
-        }
+  let origin = window.minder.queryCommandValue('resource');
+  let index = origin.indexOf(resourceName);
+  // 先删除排他的标签
+  if (props.distinctTags.indexOf(resourceName) > -1) {
+    for (let i = 0; i < origin.length; i++) {
+      if (props.distinctTags.indexOf(origin[i]) > -1) {
+        origin.splice(i, 1);
+        i--;
       }
-      if (index != -1) {
-        origin.splice(index, 1);
-      } else {
-        origin.push(resourceName);
-      }
-    } else {
-      node.data.resource = [resourceName];
     }
-    node.render();
-  });
-  minder.layout(200);
+  }
+  if (index != -1) {
+    origin.splice(index, 1);
+  } else {
+    origin.push(resourceName);
+  }
+  window.minder.execCommand('resource', origin);
 }
 </script>
 

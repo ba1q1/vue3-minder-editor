@@ -33,9 +33,6 @@ onMounted(() => {
 
 const isDisable = (): boolean => {
   if (Object.keys(minder).length === 0 || !minder.on) return true;
-  minder.on('interactchange', () => {
-    commandValue.value = minder.queryCommandValue && minder.queryCommandValue('resource');
-  });
   const node = minder.getSelectedNode && minder.getSelectedNode();
   if (node && node.data.allowDisabledTag) {
     return false;
@@ -64,26 +61,37 @@ function editResource(resourceName: string) {
       return;
     }
   }
-  const origin = minder.queryCommandValue && minder.queryCommandValue('resource');
-  if (!resourceName || !/\S/.test(resourceName)) return;
-  const index = origin.indexOf(resourceName);
-  // 先删除排他的标签
-  if (props.distinctTags.indexOf(resourceName) > -1) {
-    for (let i = 0; i < origin.length; i++) {
-      if (props.distinctTags.indexOf(origin[i]) > -1) {
-        origin.splice(i, 1);
-        i--;
-      }
+  if (!resourceName || !/\S/.test(resourceName)) {
+    return;
+  }
+  let nodes = minder.getSelectedNodes();
+  nodes.forEach((node: any) => {
+    let origin = node.data.resource;
+    if (node.data.disable) {
+      return;
     }
-  }
-  if (index !== -1) {
-    origin.splice(index, 1);
-  } else {
-    origin.push(resourceName);
-  }
-  if (minder.execCommand) {
-    minder.execCommand('resource', origin);
-  }
+    if (origin) {
+      let index = origin.indexOf(resourceName);
+      // 先删除排他的标签
+      if (props.distinctTags.indexOf(resourceName) > -1) {
+        for (let i = 0; i < origin.length; i++) {
+          if (props.distinctTags.indexOf(origin[i]) > -1) {
+            origin.splice(i, 1);
+            i--;
+          }
+        }
+      }
+      if (index != -1) {
+        origin.splice(index, 1);
+      } else {
+        origin.push(resourceName);
+      }
+    } else {
+      node.data.resource = [resourceName];
+    }
+    node.render();
+  });
+  minder.layout(200);
 }
 </script>
 

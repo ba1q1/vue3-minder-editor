@@ -14,6 +14,7 @@
       :priority-disable-check="props.priorityDisableCheck"
       :distinct-tags="props.distinctTags"
       :default-mold="props.defaultMold"
+      :del-confirm="props.delConfirm"
       @mold-change="handleMoldChange"
     />
     <main-editor
@@ -37,9 +38,10 @@
   </div>
 </template>
 <script lang="ts" name="minderEditor" setup>
+import { onMounted } from 'vue';
 import headerMenu from './main/header.vue';
 import mainEditor from './main/mainEditor.vue';
-import { editMenuProps, mainEditorProps, moleProps, priorityProps, tagProps } from '../props';
+import { editMenuProps, mainEditorProps, moleProps, priorityProps, tagProps, delProps } from '../props';
 
 const emit = defineEmits<{
   (e: 'moldChange', data: number): void;
@@ -47,7 +49,18 @@ const emit = defineEmits<{
   (e: 'afterMount'): void;
 }>();
 
-const props = defineProps({ ...editMenuProps, ...mainEditorProps, ...moleProps, ...priorityProps, ...tagProps });
+const props = defineProps({
+  ...editMenuProps,
+  ...mainEditorProps,
+  ...moleProps,
+  ...priorityProps,
+  ...tagProps,
+  ...delProps,
+});
+
+onMounted(() => {
+  window.minderProps = props;
+});
 
 function handleMoldChange(data: number) {
   emit('moldChange', data);

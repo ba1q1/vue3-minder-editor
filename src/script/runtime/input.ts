@@ -14,12 +14,6 @@ import { useLocale } from '@/hooks';
 const { t } = useLocale();
 const debug = new Debug('input') as any;
 
-declare global {
-  interface Window {
-    kity: any;
-  }
-}
-
 function InputRuntime(this: any) {
   this.receiverElement = this.receiver.element;
   this.isGecko = window.kity.Browser.gecko;

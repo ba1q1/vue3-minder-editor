@@ -6,12 +6,6 @@ interface Signatures {
   [key: string]: string;
 }
 
-declare global {
-  interface Window {
-    kity: any;
-  }
-}
-
 const MimeType = function () {
   const SPLITOR = '\uFEFF';
   const MIMETYPE: MimeTypes = {

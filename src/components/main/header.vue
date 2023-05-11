@@ -17,6 +17,7 @@
             :priority-start-with-zero="props.priorityStartWithZero"
             :tags="props.tags"
             :distinct-tags="props.distinctTags"
+            :del-confirm="props.delConfirm"
           />
         </div>
       </el-tab-pane>
@@ -34,11 +35,11 @@ import { ref } from 'vue';
 import editMenu from '../menu/edit/editMenu.vue';
 import viewMenu from '../menu/view/viewMenu.vue';
 import { useLocale } from '@/hooks';
-import { editMenuProps, moleProps, priorityProps, tagProps } from '@/props';
+import { editMenuProps, moleProps, priorityProps, tagProps, delProps } from '@/props';
 
 const { t } = useLocale();
 
-const props = defineProps({ ...editMenuProps, ...moleProps, ...priorityProps, ...tagProps, minder: null });
+const props = defineProps({ ...editMenuProps, ...moleProps, ...priorityProps, ...tagProps, ...delProps, minder: null });
 
 const emit = defineEmits<{
   (e: 'moldChange', data: number): void;

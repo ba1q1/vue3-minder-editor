@@ -1,9 +1,3 @@
-declare global {
-  interface Window {
-    HotBox: any;
-  }
-}
-
 interface Position {
   x: number;
   y: number;

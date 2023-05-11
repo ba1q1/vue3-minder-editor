@@ -6,15 +6,13 @@
     :height="height"
     :tags="tags"
     :default-mold="defaultMode"
+    :del-confirm="delConfirm"
     @save="save"
   />
 </template>
 
 <script setup lang="ts">
 import minderEditor from '@/components/minderEditor.vue';
-import { useLocale } from '@/hooks';
-
-const { t } = useLocale();
 
 const importJson = {
   root: {
@@ -72,5 +70,10 @@ const tags = ['模块1', '用例', '前置条件', '测试步骤', '预期结果
 
 function save(data: any) {
   console.log(data);
+}
+
+function delConfirm() {
+  console.log('-=-=-=-=-=-=-==');
+  window.minder.forceRemoveNode();
 }
 </script>

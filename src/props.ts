@@ -104,3 +104,10 @@ export let moleProps = {
     default: 3,
   },
 };
+
+export let delProps = {
+  delConfirm: {
+    type: Function,
+    default: null,
+  },
+};

@@ -10,7 +10,7 @@
 <script lang="ts" name="minderContainer" setup>
 import { onMounted, ref } from 'vue';
 import Navigator from './navigator.vue';
-import { markChangeNode } from '../../script/tool/utils';
+import { markChangeNode, markDeleteNode } from '../../script/tool/utils';
 import { useLocale } from '@/hooks';
 import Editor from '@/script/editor';
 import { editMenuProps, mainEditorProps, priorityProps, tagProps } from '@/props';
@@ -83,6 +83,11 @@ onMounted(() => {
   window.minder = window.km;
   window.minderEditor = editor;
   window.minder.moveEnable = props.moveEnable;
+
+  window.minder.forceRemoveNode = () => {
+    markDeleteNode(window.minder);
+    window.minder.execCommand('RemoveNode');
+  };
 
   window.minder.on('preExecCommand', (env: any) => {
     const selectNodes = env.minder.getSelectedNodes();

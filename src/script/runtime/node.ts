@@ -42,6 +42,11 @@ export default function NodeRuntime(this: { minder: any; hotbox: any; editText: 
           minder.on('layoutallfinish', afterAppend);
         } else {
           if (command.indexOf('RemoveNode') > -1) {
+            if (window.minderProps?.delConfirm) {
+              // 如果有删除确认，不删除，调用确认方法
+              window.minderProps.delConfirm();
+              return;
+            }
             markDeleteNode(minder);
           }
           minder.execCommand(command);

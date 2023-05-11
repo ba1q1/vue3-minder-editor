@@ -4,7 +4,7 @@
     <selection />
     <insert-box />
     <move-box :move-enable="props.moveEnable" />
-    <edit-del />
+    <edit-del :del-confirm="props.delConfirm" />
     <sequence-box
       v-if="props.sequenceEnable"
       :priority-prefix="props.priorityPrefix"
@@ -32,7 +32,7 @@ import progressBox from './progressBox.vue';
 import expand from './expand.vue';
 import selection from './selection.vue';
 import TagBox from './tagBox.vue';
-import { editMenuProps, priorityProps, tagProps } from '@/props';
+import { editMenuProps, priorityProps, tagProps, delProps } from '@/props';
 
-const props = defineProps({ ...editMenuProps, ...priorityProps, ...tagProps });
+const props = defineProps({ ...editMenuProps, ...priorityProps, ...tagProps, ...delProps });
 </script>

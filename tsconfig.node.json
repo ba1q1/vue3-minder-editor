@@ -11,7 +11,7 @@
     "composite": true,
     "types": [
       "node",
-      "element-plus/global"
+      "element-plus/global",
     ]
   }
 }

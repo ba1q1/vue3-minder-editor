@@ -1,11 +1,5 @@
 import { markDeleteNode, resetNodes } from '../tool/utils';
 
-declare global {
-  interface Window {
-    angular: any;
-  }
-}
-
 interface INode {
   getLevel(): number;
   isAncestorOf(node: INode): boolean;

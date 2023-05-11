@@ -16,11 +16,14 @@
 </template>
 
 <script lang="ts" name="edit_del" setup>
-import { computed, onMounted, reactive, nextTick, ref } from 'vue';
-import { isDeleteDisableNode, isDisableNode, markDeleteNode } from '@/script/tool/utils';
+import { onMounted, reactive, nextTick, ref } from 'vue';
+import { isDeleteDisableNode, isDisableNode } from '@/script/tool/utils';
 import { useLocale } from '@/hooks';
+import { delProps } from '@/props';
 
 const { t } = useLocale();
+
+const props = defineProps(delProps);
 
 let minder = reactive<any>({});
 const textDisabled = ref(true);
@@ -71,7 +74,10 @@ function del() {
   if (removeNodeDisabled.value || !minder.queryCommandState || !minder.execCommand) {
     return;
   }
-  markDeleteNode(minder);
-  if (minder.queryCommandState('RemoveNode') !== -1) minder.execCommand('RemoveNode');
+  if (props.delConfirm) {
+    props.delConfirm();
+    return;
+  }
+  minder.forceRemoveNode();
 }
 </script>

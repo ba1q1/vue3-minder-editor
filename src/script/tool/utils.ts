@@ -25,7 +25,14 @@ export function isTagEnable(minder: any) {
   if (minder && minder.getSelectedNode) {
     node = minder.getSelectedNode();
   }
-  if (node && node.data.tagEnable === true) {
+  if (isTagEnableNode(node)) {
+    return true;
+  }
+  return false;
+}
+
+export function isTagEnableNode(node: any) {
+  if (node && (node.data.tagEnable === true || node.data.allowDisabledTag === true)) {
     return true;
   }
   return false;
@@ -109,4 +116,11 @@ export function resetNodes(nodes: any) {
       }
     });
   }
+}
+
+export function isDisableForNode(node: any) {
+  if (node && node.data.disable === true) {
+    return true;
+  }
+  return false;
 }

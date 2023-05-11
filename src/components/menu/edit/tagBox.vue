@@ -12,14 +12,13 @@
 </template>
 
 <script lang="ts" name="TagBox" setup>
-import { computed, nextTick, onMounted, reactive, ref } from 'vue';
-import { isDisableNode, isTagEnable } from '@/script/tool/utils';
+import { nextTick, onMounted, reactive, ref } from 'vue';
+import { isDisableNode, isTagEnable, isDisableForNode, isTagEnableNode } from '@/script/tool/utils';
 import { tagProps } from '@/props';
 
 const props = defineProps(tagProps);
 
 let minder = reactive<any>({});
-const commandValue = ref('');
 const commandDisabled = ref(true);
 
 onMounted(() => {
@@ -34,9 +33,6 @@ onMounted(() => {
 const isDisable = (): boolean => {
   if (Object.keys(minder).length === 0 || !minder.on) return true;
   const node = minder.getSelectedNode && minder.getSelectedNode();
-  if (node && node.data.allowDisabledTag) {
-    return false;
-  }
   if (isDisableNode(minder) && !isTagEnable(minder)) {
     return true;
   }
@@ -67,7 +63,7 @@ function editResource(resourceName: string) {
   let nodes = minder.getSelectedNodes();
   nodes.forEach((node: any) => {
     let origin = node.data.resource;
-    if (node.data.disable) {
+    if (isDisableForNode(node) && !isTagEnableNode(node)) {
       return;
     }
     if (origin) {

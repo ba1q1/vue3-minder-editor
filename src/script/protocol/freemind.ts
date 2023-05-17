@@ -43,6 +43,7 @@ function traverseJson(node: any) {
   }
   result += concatNodes(node);
   if (node.children && node.children.length > 0) {
+    // eslint-disable-next-line no-restricted-syntax
     for (const element of node.children) {
       result += traverseJson(element);
       result += entityNode;
@@ -57,7 +58,7 @@ function concatNodes(node: any) {
   result += nodeCreated + datas.created + nodeId + datas.id + nodeText + datas.text + nodeSuffix;
   if (datas.priority) {
     const mapped = priorities.find((d) => {
-      return d.jp == datas.priority;
+      return d.jp === datas.priority;
     });
     if (mapped) {
       result += iconTextPrefix + mapped.mp + iconTextSuffix;

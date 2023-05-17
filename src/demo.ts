@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { setupI18n } from '@/locale';
 import App from './demo/index.vue';
 import mindEditor from './components/minderEditor.vue';
 
@@ -15,5 +16,10 @@ const router = createRouter({
 });
 
 const app = createApp(App);
-app.component(mindEditor.name, mindEditor);
-app.use(router).mount('#app');
+async function bootstrap() {
+  await setupI18n(app);
+  app.component(mindEditor.name, mindEditor);
+  app.use(router).mount('#app');
+}
+
+bootstrap();

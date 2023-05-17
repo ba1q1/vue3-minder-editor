@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable camelcase */
 /**
  * @fileOverview
  *
@@ -9,9 +11,9 @@
 import '../tool/innertext';
 import { isDisableNode, markChangeNode } from '../tool/utils';
 import Debug from '../tool/debug';
-import { useLocale } from '@/hooks';
+import useLocaleNotVue from '@/script/tool/useLocaleNotVue';
 
-const { t } = useLocale();
+const tran = useLocaleNotVue;
 const debug = new Debug('input') as any;
 
 function InputRuntime(this: any) {
@@ -48,14 +50,14 @@ function InputRuntime(this: any) {
         e.stopPropagation();
       };
     }
-    this.minder.on &&
+    if (this.minder.on) {
       this.minder.on('layoutallfinish viewchange viewchanged selectionchange', (e: any) => {
         // viewchange event is too frequenced, lazy it
-        if (e.type == 'viewchange' && this.fsm.state() != 'input') return;
+        if (e.type === 'viewchange' && this.fsm.state() !== 'input') return;
 
         updatePosition();
       });
-
+    }
     updatePosition();
   };
 
@@ -135,19 +137,20 @@ function InputRuntime(this: any) {
     });
 
     // lost focus to commit
-    this.receiver.onblur((e: any) => {
-      if (this.fsm.state() == 'input') {
+    this.receiver.onblur(() => {
+      if (this.fsm.state() === 'input') {
         this.fsm.jump('normal', 'input-commit');
       }
     });
 
     this.minder.on('beforemousedown', () => {
-      if (this.fsm.state() == 'input') {
+      if (this.fsm.state() === 'input') {
         this.fsm.jump('normal', 'input-commit');
       }
     });
 
     this.minder.on('dblclick', () => {
+      // eslint-disable-next-line no-underscore-dangle
       if (this.minder.getSelectedNode() && this.minder._status !== 'readonly' && !isDisableNode(this.minder)) {
         this.editText();
       }
@@ -160,15 +163,18 @@ function InputRuntime(this: any) {
   const setupHotbox = () => {
     this.hotbox.state('main').button({
       position: 'center',
-      label: t('minder.commons.edit'),
+      label: tran('minder.commons.edit'),
       key: 'F2',
       enable: () => {
         if (isDisableNode(this.minder)) {
           return false;
         }
-        return this.minder.queryCommandState('text') != -1;
+        return this.minder.queryCommandState('text') !== -1;
       },
       action: this.editText,
+      beforeShow() {
+        this.$button.children[0].innerHTML = tran('minder.commons.edit');
+      },
     });
   };
 
@@ -181,12 +187,7 @@ function InputRuntime(this: any) {
    * @Editor: Naixor
    * @Date: 2015.9.16
    */
-  const commitInputText = (textNodes: NodeListOf<ChildNode>): string => {
-    interface ChildNodeT extends ChildNode {
-      src?: string;
-      alt?: string;
-    }
-
+  const commitInputText = (textNodes: any): string => {
     let text = '';
     const TAB_CHAR = '\t';
     const ENTER_CHAR = '\n';
@@ -198,7 +199,8 @@ function InputRuntime(this: any) {
     let isBold = false;
     let isItalic = false;
 
-    for (let str: ChildNodeT | string, _divChildNodes, space_l, i = 0, l = textNodes.length; i < l; i++) {
+    // eslint-disable-next-line no-underscore-dangle, camelcase
+    for (let str: any | string, _divChildNodes, space_l, i = 0, l = textNodes.length; i < l; i++) {
       str = textNodes[i];
 
       switch (Object.prototype.toString.call(str)) {
@@ -216,7 +218,7 @@ function InputRuntime(this: any) {
            *     |123abc| -> 此时123为一个TextNode为[#Text 123, #Text abc]，但是对这两个任意取值wholeText均为全部内容123abc
            * 上述BUG仅存在在FF中，故将wholeText更改为textContent
            */
-          str = str.textContent!.replace('&nbsp;', ' ');
+          str = str.textContent?.replace('&nbsp;', ' ');
 
           if (!STR_CHECK.test(str)) {
             space_l = str.length;
@@ -243,8 +245,7 @@ function InputRuntime(this: any) {
               isItalic = true;
               break;
             }
-            default: {
-            }
+            default:
           }
           [].splice.apply(textNodes, [i, 1, ...[].slice.call(str.childNodes)]);
           l = textNodes.length;
@@ -272,7 +273,7 @@ function InputRuntime(this: any) {
         // 被增加div标签的情况会被处理成正常情况并会推交给上面处理
         case '[object HTMLDivElement]': {
           _divChildNodes = [];
-          for (var di = 0; di < l; di++) {
+          for (let di = 0; di < l; di++) {
             _divChildNodes.push(str.childNodes[di]);
           }
           _divChildNodes.push(BR);
@@ -284,7 +285,7 @@ function InputRuntime(this: any) {
         default: {
           if (str && str.childNodes.length) {
             _divChildNodes = [];
-            for (var di = 0; di < l; di++) {
+            for (let di = 0; di < l; di++) {
               _divChildNodes.push(str.childNodes[di]);
             }
             _divChildNodes.push(BR);

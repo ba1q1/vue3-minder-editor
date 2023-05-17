@@ -18,10 +18,10 @@
 <script lang="ts" name="edit_del" setup>
 import { onMounted, reactive, nextTick, ref } from 'vue';
 import { isDeleteDisableNode, isDisableNode } from '@/script/tool/utils';
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 import { delProps } from '@/props';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 const props = defineProps(delProps);
 

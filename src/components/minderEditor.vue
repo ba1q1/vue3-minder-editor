@@ -38,10 +38,13 @@
   </div>
 </template>
 <script lang="ts" name="minderEditor" setup>
-import { onMounted } from 'vue';
+import { onMounted, watchEffect, provide, computed, ref } from 'vue';
 import headerMenu from './main/header.vue';
 import mainEditor from './main/mainEditor.vue';
 import { editMenuProps, mainEditorProps, moleProps, priorityProps, tagProps, delProps } from '../props';
+import useLocale from '@/locale/useLocale';
+
+import type { LocaleType } from '#/locale';
 
 const emit = defineEmits<{
   (e: 'moldChange', data: number): void;
@@ -50,6 +53,10 @@ const emit = defineEmits<{
 }>();
 
 const props = defineProps({
+  language: {
+    type: String,
+    default: 'zh-CN',
+  },
   ...editMenuProps,
   ...mainEditorProps,
   ...moleProps,
@@ -58,9 +65,18 @@ const props = defineProps({
   ...delProps,
 });
 
-onMounted(() => {
+onMounted(async () => {
   window.minderProps = props;
 });
+
+const { changeLocale } = useLocale();
+
+watchEffect(() => changeLocale(props.language as LocaleType));
+
+provide(
+  'language',
+  computed(() => props.language)
+);
 
 function handleMoldChange(data: number) {
   emit('moldChange', data);

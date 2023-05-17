@@ -34,10 +34,10 @@
 import { ref } from 'vue';
 import editMenu from '../menu/edit/editMenu.vue';
 import viewMenu from '../menu/view/viewMenu.vue';
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 import { editMenuProps, moleProps, priorityProps, tagProps, delProps } from '@/props';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 const props = defineProps({ ...editMenuProps, ...moleProps, ...priorityProps, ...tagProps, ...delProps, minder: null });
 

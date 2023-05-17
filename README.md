@@ -115,7 +115,11 @@ app.component(mindEditor.name, mindEditor);
 ## 国际化
 
 ```
-TODO
+给组件传入language属性即可，例：
+<minder-editor
+  class="minder-container"
+  :language="language"
+/>
 ```
 
 ## Props

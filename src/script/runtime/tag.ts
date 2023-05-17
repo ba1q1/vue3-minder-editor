@@ -1,7 +1,7 @@
 import { isDisableNode, isTagEnable } from '../tool/utils';
-import { useLocale } from '@/hooks';
+import useLocaleNotVue from '@/script/tool/useLocaleNotVue';
 
-const { t } = useLocale();
+const tran = useLocaleNotVue;
 
 // eslint-disable-next-line no-unused-vars
 export default function TagRuntime(this: any) {
@@ -10,7 +10,7 @@ export default function TagRuntime(this: any) {
 
   main.button({
     position: 'top',
-    label: t('minder.main.tag'),
+    label: tran('minder.main.tag'),
     key: 'H',
     next: 'tag',
     enable() {
@@ -19,23 +19,32 @@ export default function TagRuntime(this: any) {
       }
       return minder.queryCommandState('tag') !== -1;
     },
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.main.tag');
+    },
   });
 
   const tag = hotbox.state('tag');
 
   tag.button({
     position: 'center',
-    label: t('minder.commons.remove'),
+    label: tran('minder.commons.remove'),
     key: 'Del',
     action() {
       minder.execCommand('Tag', 0);
+    },
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.commons.remove');
     },
   });
 
   tag.button({
     position: 'top',
-    label: t('minder.commons.return'),
+    label: tran('minder.commons.return'),
     key: 'esc',
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.commons.return');
+    },
     next: 'back',
   });
 }

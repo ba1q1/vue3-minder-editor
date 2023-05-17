@@ -1,14 +1,15 @@
 import { isDisableNode, markDeleteNode, isDeleteDisableNode } from '../tool/utils';
-import { useLocale } from '@/hooks';
+import useLocaleNotVue from '@/script/tool/useLocaleNotVue';
 
-const { t } = useLocale();
+const tran = useLocaleNotVue;
+
 const buttons = [
-  `${t('minder.menu.move.forward')}:Alt+Up:ArrangeUp`,
-  `${t('minder.menu.insert._down')}:Tab|Insert:AppendChildNode`,
-  `${t('minder.menu.insert._same')}:Enter:AppendSiblingNode`,
-  `${t('minder.menu.move.backward')}:Alt+Down:ArrangeDown`,
-  `${t('minder.commons.delete')}:Delete|Backspace:RemoveNode`,
-  `${t('minder.menu.insert._up')}:Shift+Tab|Shift+Insert:AppendParentNode`,
+  `minder.menu.move.forward:Alt+Up:ArrangeUp`,
+  `minder.menu.insert._down:Tab|Insert:AppendChildNode`,
+  `minder.menu.insert._same:Enter:AppendSiblingNode`,
+  `minder.menu.move.backward:Alt+Down:ArrangeDown`,
+  `minder.commons.delete:Delete|Backspace:RemoveNode`,
+  `minder.menu.insert._up:Shift+Tab|Shift+Insert:AppendParentNode`,
 ];
 
 // eslint-disable-next-line no-unused-vars
@@ -28,12 +29,12 @@ export default function NodeRuntime(this: { minder: any; hotbox: any; editText: 
     const command = parts.shift() || '';
     main.button({
       position: 'ring',
-      label,
+      label: tran(label || ''),
       key,
       action() {
         if (command?.indexOf('Append') === 0) {
           AppendLock++;
-          minder.execCommand(command, t('minder.main.subject.branch'));
+          minder.execCommand(command, tran('minder.main.subject.branch'));
 
           const afterAppend = () => {
             if (!--AppendLock) {
@@ -76,6 +77,9 @@ export default function NodeRuntime(this: { minder: any; hotbox: any; editText: 
         }
         return minder.queryCommandState(command) !== -1;
       },
+      beforeShow() {
+        this.$button.children[0].innerHTML = tran(label || '');
+      },
     });
   });
 
@@ -94,9 +98,9 @@ export default function NodeRuntime(this: { minder: any; hotbox: any; editText: 
     },
     beforeShow() {
       if (!minder.queryCommandState('expand')) {
-        this.$button.children[0].innerHTML = t('minder.menu.expand.expand');
+        this.$button.children[0].innerHTML = tran('minder.menu.expand.expand');
       } else {
-        this.$button.children[0].innerHTML = t('minder.menu.expand.folding');
+        this.$button.children[0].innerHTML = tran('minder.menu.expand.folding');
       }
     },
   });

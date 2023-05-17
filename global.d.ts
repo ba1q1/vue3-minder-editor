@@ -8,4 +8,5 @@ declare interface Window {
   minder: Record<string, any>;
   minderEditor: Record<string, any>;
   km: Record<string, any>;
+  t: any;
 }

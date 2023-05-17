@@ -6,9 +6,9 @@
  * @author: techird
  * @copyright: Baidu FEX, 2014
  */
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 export default function MinderRuntime(this: { selector: string; minder?: any }) {
   // 不使用 kityminder 的按键处理，由 ReceiverRuntime 统一处理
@@ -25,5 +25,6 @@ export default function MinderRuntime(this: { selector: string; minder?: any }) 
   minder.execCommand('text', t('minder.main.subject.central'));
 
   // 导出给其它 Runtime 使用
-  this.minder = window.minder = minder;
+  this.minder = minder;
+  window.minder = minder;
 }

@@ -1,7 +1,7 @@
 import { isDisableNode } from '../tool/utils';
-import { useLocale } from '@/hooks';
+import useLocaleNotVue from '@/script/tool/useLocaleNotVue';
 
-const { t } = useLocale();
+const tran = useLocaleNotVue;
 
 export default function PriorityRuntime(this: any): void {
   const { minder, hotbox } = this;
@@ -10,14 +10,17 @@ export default function PriorityRuntime(this: any): void {
 
   main.button({
     position: 'top',
-    label: t('minder.main.priority'),
+    label: tran('minder.main.priority'),
     key: 'P',
     next: 'priority',
     enable() {
       if (isDisableNode(minder)) {
         return false;
       }
-      return minder.queryCommandState('priority') != -1;
+      return minder.queryCommandState('priority') !== -1;
+    },
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.main.priority');
     },
   });
 
@@ -25,17 +28,23 @@ export default function PriorityRuntime(this: any): void {
 
   priority.button({
     position: 'center',
-    label: t('minder.commons.remove'),
+    label: tran('minder.commons.remove'),
     key: 'Del',
     action() {
       minder.execCommand('Priority', 0);
+    },
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.commons.remove');
     },
   });
 
   priority.button({
     position: 'top',
-    label: t('minder.commons.return'),
+    label: tran('minder.commons.return'),
     key: 'esc',
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.commons.return');
+    },
     next: 'back',
   });
 }

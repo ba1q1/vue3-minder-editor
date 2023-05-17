@@ -34,9 +34,9 @@
 </template>
 
 <script lang="ts" name="selection" setup>
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 function selectAll() {
   const selection: any[] = [];

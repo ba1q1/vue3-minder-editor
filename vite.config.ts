@@ -7,6 +7,7 @@ import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
+import replace from '@rollup/plugin-replace';
 
 export default defineConfig({
   resolve: {
@@ -48,6 +49,16 @@ export default defineConfig({
 
     Icons({
       autoInstall: true,
+    }),
+
+    replace({
+      preventAssignment: true,
+      // 将__VUE_I18N_FULL_INSTALL__替换为true
+      __VUE_I18N_FULL_INSTALL__: true,
+      // 将__VUE_I18N_LEGACY_API__替换为false
+      __VUE_I18N_LEGACY_API__: false,
+      // 将__VUE_I18N_PROD_DEVTOOLS__替换为false
+      __VUE_I18N_PROD_DEVTOOLS__: false,
     }),
   ],
   optimizeDeps: {

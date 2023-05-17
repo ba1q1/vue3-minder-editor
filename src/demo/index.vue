@@ -7,11 +7,15 @@
     :tags="tags"
     :default-mold="defaultMode"
     :del-confirm="delConfirm"
+    :language="language"
     @save="save"
   />
+  <button @click="toggleL">切换语言</button>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
 const importJson = {
   root: {
     data: {
@@ -67,6 +71,8 @@ const height = 500;
 const defaultMode = 3;
 const tags = ['模块1', '用例', '前置条件', '测试步骤', '预期结果', '备注'];
 
+const language = ref(localStorage.getItem('minder-locale') || 'zh-CN');
+
 function save(data: any) {
   console.log(data);
 }
@@ -74,5 +80,14 @@ function save(data: any) {
 function delConfirm() {
   console.log('-=-=-=-=-=-=-==');
   window.minder.forceRemoveNode();
+}
+
+function toggleL() {
+  if (language.value === 'zh-CN') {
+    language.value = 'en-US';
+  } else {
+    language.value = 'zh-CN';
+  }
+  localStorage.setItem('minder-locale', language.value);
 }
 </script>

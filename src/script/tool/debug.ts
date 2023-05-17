@@ -14,7 +14,7 @@ function stringHash(str: string): number {
 class Debug {
   private flaged: boolean;
 
-  public log: () => void;
+  public log: (...args: any) => void;
 
   constructor(flag: string) {
     this.flaged = window.location.search.indexOf(flag) !== -1;

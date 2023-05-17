@@ -18,16 +18,11 @@
 <script lang="ts" name="progressBox" setup>
 import { computed, nextTick, onMounted, reactive, ref } from 'vue';
 import { isDisableNode } from '@/script/tool/utils';
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
-let minder = reactive<{
-  queryCommandState?: Function;
-  execCommand?: Function;
-  queryCommandValue?: Function;
-  on?: Function;
-}>({});
+let minder = reactive<any>({});
 const commandValue = ref('');
 
 const items = [
@@ -44,7 +39,9 @@ const items = [
 ];
 
 onMounted(() => {
-  nextTick(() => (minder = window.minder));
+  nextTick(() => {
+    minder = window.minder;
+  });
 });
 
 const commandDisabled = computed(() => {

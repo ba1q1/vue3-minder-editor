@@ -50,9 +50,9 @@
 import { computed, nextTick, onMounted, reactive, ref } from 'vue';
 import type { Ref } from 'vue';
 import { getLocalStorage, setLocalStorage } from '../../script/store';
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 const zoomPan: Ref<HTMLDivElement | null> = ref(null);
 const navPreviewer: Ref<HTMLDivElement | null> = ref(null);
@@ -62,42 +62,12 @@ const isNavOpen = ref(true);
 const previewNavigator: Ref<HTMLDivElement | null> = ref(null);
 const contentView = ref('');
 
-let visibleView = reactive<{
-  intersect?: Function;
-  width?: number;
-  height?: number;
-}>({});
-let visibleRect = reactive<{
-  setBox?: Function;
-}>({});
-let nodeThumb = reactive<{
-  fill?: Function;
-  setPathData?: Function;
-}>({});
-let connectionThumb = reactive<{
-  stroke?: Function;
-  setPathData?: Function;
-}>({});
-let paper = reactive<{
-  setViewBox?: Function;
-  setStyle?: Function;
-  put?: Function;
-  on?: Function;
-}>({});
-let minder = reactive<{
-  queryCommandState?: Function;
-  execCommand?: Function;
-  getOption?: Function;
-  getRoot?: Function;
-  on?: Function;
-  off?: Function;
-  getRenderContainer?: Function;
-  getTheme?: Function;
-  getStyle?: Function;
-  getViewDragger?: Function;
-  setDefaultOptions?: Function;
-  getPaper?: Function;
-}>({});
+let visibleView = reactive<any>({});
+let visibleRect = reactive<any>({});
+let nodeThumb = reactive<any>({});
+let connectionThumb = reactive<any>({});
+let paper = reactive<any>({});
+let minder = reactive<any>({});
 
 const config = reactive({
   // 右侧面板最小宽度
@@ -313,10 +283,11 @@ onMounted(() => {
     visibleView = new kity.Box();
 
     pathHandler = getPathHandler(minder.getTheme ? minder.getTheme() : '');
-    minder.setDefaultOptions &&
+    if (minder.setDefaultOptions) {
       minder.setDefaultOptions({
         zoom: config.zoom,
       });
+    }
 
     minder.on('zoom', function (e: any) {
       zoom.value = e.zoom;

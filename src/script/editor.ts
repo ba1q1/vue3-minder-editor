@@ -36,10 +36,17 @@ function assemble(runtime: Runtime) {
 class KMEditor {
   public selector: HTMLDivElement | null | string;
 
-  constructor(selector: HTMLDivElement | null | string, editMenuProps: EditMenuProps) {
+  public editMenuProps: EditMenuProps;
+
+  constructor(selector: HTMLDivElement | null | string, editMenuPropsC: EditMenuProps) {
     this.selector = selector;
+    this.editMenuProps = editMenuPropsC;
+    this.init();
+  }
+
+  public init() {
     for (let i = 0; i < runtimes.length; i++) {
-      if (typeof runtimes[i].call === 'function' && isEnable(editMenuProps, runtimes[i])) {
+      if (typeof runtimes[i].call === 'function' && isEnable(this.editMenuProps, runtimes[i])) {
         runtimes[i].call(this, this);
       }
     }
@@ -49,11 +56,11 @@ class KMEditor {
 function isEnable(editMenuProps: EditMenuProps, runtime: Runtime) {
   switch (runtime.name) {
     case 'PriorityRuntime':
-      return editMenuProps.sequenceEnable == true;
+      return editMenuProps.sequenceEnable === true;
     case 'TagRuntime':
-      return editMenuProps.tagEnable == true;
+      return editMenuProps.tagEnable === true;
     case 'ProgressRuntime':
-      return editMenuProps.progressEnable == true;
+      return editMenuProps.progressEnable === true;
     default:
       return true;
   }

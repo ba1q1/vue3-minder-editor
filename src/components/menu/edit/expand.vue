@@ -37,9 +37,9 @@
 </template>
 
 <script lang="ts" name="expand" setup>
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 function handleCommand(command: string) {
   window.minder?.execCommand('ExpandToLevel', command);

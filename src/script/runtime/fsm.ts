@@ -1,3 +1,6 @@
+/* eslint-disable prefer-const */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-param-reassign */
 import Debug from '../tool/debug';
 
 function handlerConditionMatch(condition: any, when: string, exit: string, enter: string): boolean {
@@ -45,13 +48,13 @@ class FSM {
    * @param  {string} newState  新状态名称
    * @param  {any} reason 跳转的原因，可以作为参数传递给跳转监视器
    */
-  public jump(newState: string, reason: any): string {
+  public jump(newState: string, reason: any, ...args: any): string {
     if (!reason) {
       throw new Error('Please tell fsm the reason to jump');
     }
 
     const oldState = this.currentState;
-    const notify = [oldState, newState].concat([].slice.call(arguments, 1));
+    const notify = [oldState, newState].concat([].slice.call(args, 1));
     let i;
     let handler;
 
@@ -59,7 +62,7 @@ class FSM {
     for (i = 0; i < this.handlers.length; i++) {
       handler = this.handlers[i];
       if (handlerConditionMatch(handler.condition, 'before', oldState, newState)) {
-        if (handler.apply(null, notify)) {
+        if (handler.apply(null, [...notify])) {
           return newState;
         }
       }
@@ -72,7 +75,7 @@ class FSM {
     for (i = 0; i < this.handlers.length; i++) {
       handler = this.handlers[i];
       if (handlerConditionMatch(handler.condition, 'after', oldState, newState)) {
-        handler.apply(null, notify);
+        handler.apply(null, [...notify]);
       }
     }
     return newState;

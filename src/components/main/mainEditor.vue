@@ -8,17 +8,17 @@
 </template>
 
 <script lang="ts" name="minderContainer" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, inject, watch } from 'vue';
 import type { Ref } from 'vue';
 import Navigator from './navigator.vue';
 import { markChangeNode, markDeleteNode } from '../../script/tool/utils';
-import { useLocale } from '@/hooks';
-import Editor from '@/script/editor';
+import { useI18n } from '@/hooks/useI18n';
 import { editMenuProps, mainEditorProps, priorityProps, tagProps } from '@/props';
+import Editor from '@/script/editor';
 
-const { t } = useLocale();
-
+const { t } = useI18n();
 const props = defineProps({ ...editMenuProps, ...mainEditorProps, ...tagProps, ...priorityProps });
+const language = inject<Ref>('language');
 
 const emit = defineEmits({
   afterMount: () => ({}),
@@ -67,7 +67,7 @@ function handleTagButton() {
   });
 }
 
-onMounted(() => {
+async function init() {
   window.editor = new Editor(mec.value, {
     sequenceEnable: props.sequenceEnable,
     tagEnable: props.tagEnable,
@@ -122,6 +122,10 @@ onMounted(() => {
   handlePriorityButton();
   handleTagButton();
   emit('afterMount');
+}
+
+onMounted(async () => {
+  init();
 });
 </script>
 

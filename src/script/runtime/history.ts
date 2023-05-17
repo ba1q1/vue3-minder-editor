@@ -1,7 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import { isDisableNode } from '../tool/utils';
-import { useLocale } from '@/hooks';
+import useLocaleNotVue from '@/script/tool/useLocaleNotVue';
 
-const { t } = useLocale();
+const tran = useLocaleNotVue;
 
 interface History {
   reset: () => void;
@@ -29,13 +30,11 @@ export default function HistoryRuntime(this: { minder: any; hotbox: any; editTex
   const _objectKeys = (function () {
     if (Object.keys) return Object.keys;
 
-    return function (o: Object) {
-      const keys = [];
-      for (const i in o) {
-        if (o.hasOwnProperty(i)) {
-          keys.push(i);
-        }
-      }
+    return function (o: object) {
+      const keys: string[] = [];
+      Object.keys(o).forEach((i) => {
+        keys.push(i);
+      });
       return keys;
     };
   })();
@@ -58,14 +57,15 @@ export default function HistoryRuntime(this: { minder: any; hotbox: any; editTex
     let changed = false;
     let deleted = false;
 
-    for (var t = oldKeys.length - 1; t >= 0; t--) {
-      var key = oldKeys[t];
+    for (let t = oldKeys.length - 1; t >= 0; t--) {
+      const key = oldKeys[t];
       const oldVal = mirror[key];
+      // eslint-disable-next-line no-prototype-builtins
       if (obj.hasOwnProperty(key)) {
         const newVal = obj[key];
         if (typeof oldVal === 'object' && oldVal != null && typeof newVal === 'object' && newVal != null) {
           _generate(oldVal, newVal, patches, `${path}/${escapePathComponent(key)}`);
-        } else if (oldVal != newVal) {
+        } else if (oldVal !== newVal) {
           changed = true;
           patches.push({
             op: 'replace',
@@ -82,12 +82,13 @@ export default function HistoryRuntime(this: { minder: any; hotbox: any; editTex
       }
     }
 
-    if (!deleted && newKeys.length == oldKeys.length) {
+    if (!deleted && newKeys.length === oldKeys.length) {
       return;
     }
 
-    for (var t = 0; t < newKeys.length; t++) {
-      var key = newKeys[t];
+    for (let t = 0; t < newKeys.length; t++) {
+      const key = newKeys[t];
+      // eslint-disable-next-line no-prototype-builtins
       if (!mirror.hasOwnProperty(key)) {
         patches.push({
           op: 'add',
@@ -169,6 +170,7 @@ export default function HistoryRuntime(this: { minder: any; hotbox: any; editTex
       case 'data.add':
         minder.select(patch.node, true);
         break;
+      default:
     }
   }
 
@@ -187,7 +189,7 @@ export default function HistoryRuntime(this: { minder: any; hotbox: any; editTex
   const main = hotbox.state('main');
   main.button({
     position: 'bottom',
-    label: t('minder.main.history.undo'),
+    label: tran('minder.main.history.undo'),
     key: 'Ctrl + Z',
     enable() {
       if (isDisableNode(minder)) {
@@ -196,11 +198,14 @@ export default function HistoryRuntime(this: { minder: any; hotbox: any; editTex
       return hasUndo;
     },
     action: undo,
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.main.history.undo');
+    },
     next: 'idle',
   });
   main.button({
     position: 'bottom',
-    label: t('minder.main.history.redo'),
+    label: tran('minder.main.history.redo'),
     key: 'Ctrl + Y',
     enable() {
       if (isDisableNode(minder)) {
@@ -209,6 +214,9 @@ export default function HistoryRuntime(this: { minder: any; hotbox: any; editTex
       return hasRedo;
     },
     action: redo,
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.main.history.undo');
+    },
     next: 'idle',
   });
 }

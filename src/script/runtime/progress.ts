@@ -1,7 +1,7 @@
 import { isDisableNode } from '../tool/utils';
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 export default function ProgressRuntime(this: any) {
   const { minder, hotbox } = this;
@@ -17,7 +17,7 @@ export default function ProgressRuntime(this: any) {
       if (isDisableNode(minder)) {
         return false;
       }
-      return minder.queryCommandState('progress') != -1;
+      return minder.queryCommandState('progress') !== -1;
     },
   });
 
@@ -28,7 +28,7 @@ export default function ProgressRuntime(this: any) {
       label: `G${p}`,
       key: p,
       action() {
-        minder.execCommand('Progress', parseInt(p) + 1);
+        minder.execCommand('Progress', parseInt(p, 10) + 1);
       },
     });
     return p;

@@ -4,9 +4,9 @@ import json from '../protocol/json';
 import plain from '../protocol/plain';
 import md from '../protocol/markdown';
 import mm from '../protocol/freemind';
-import { useLocale } from '@/hooks';
+import useLocaleNotVue from '@/script/tool/useLocaleNotVue';
 
-const { t } = useLocale();
+const tran = useLocaleNotVue;
 
 export default function ExportRuntime(this: any) {
   const { minder, hotbox } = this;
@@ -22,9 +22,12 @@ export default function ExportRuntime(this: any) {
   const main = hotbox.state('main');
   main.button({
     position: 'top',
-    label: t('minder.commons.export'),
+    label: tran('minder.commons.export'),
     key: 'E',
     enable: canExp,
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.commons.export');
+    },
     next: 'exp',
   });
 
@@ -35,13 +38,19 @@ export default function ExportRuntime(this: any) {
       label: item.label,
       key: null,
       action: item.cmd,
+      beforeShow() {
+        this.$button.children[0].innerHTML = tran(item.label);
+      },
     });
   });
 
   exp.button({
     position: 'center',
-    label: t('minder.commons.cancel'),
+    label: tran('minder.commons.cancel'),
     key: 'esc',
+    beforeShow() {
+      this.$button.children[0].innerHTML = tran('minder.commons.cancel');
+    },
     next: 'back',
   });
 

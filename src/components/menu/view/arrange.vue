@@ -11,9 +11,9 @@
 
 <script lang="ts" name="Arrange" setup>
 import { computed } from 'vue';
-import { useLocale } from '@/hooks';
+import { useI18n } from '@/hooks/useI18n';
 
-const { t } = useLocale();
+const { t } = useI18n();
 
 const disabled = computed(() => {
   try {

@@ -22,7 +22,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'vue', 'prettier'],
-  ignorePatterns: ['.config.cjs', '/src/.d.ts', '/*.json', '/node_modules'],
+  ignorePatterns: ['.config.cjs', '/src/.d.ts', '/*.json', '/node_modules', '/*.md'],
   rules: {
     'prettier/prettier': 'error',
     'consistent-return': 'off',
@@ -43,6 +43,7 @@ module.exports = {
     '@typescript-eslint/ban-types': 'warn',
     'no-plusplus': 'off',
     'no-use-before-define': 'off',
+    'no-unused-vars': 'warn',
     'vue/html-self-closing': [
       'error',
       {

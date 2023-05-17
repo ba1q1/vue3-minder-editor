@@ -10,12 +10,14 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
+    "build:report": "NODE_ENV=analyze run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore && node lint:styles",
     "lint:styles": "stylelint 'src/**/*.{vue,html,css,scss}' --fix",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@7polo/kity": "2.0.8",

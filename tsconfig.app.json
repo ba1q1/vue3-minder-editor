@@ -9,7 +9,7 @@
     "global.d.ts"
   ], // TS解析路径配置
   "exclude": [
-    "node_modules"
+    "node_modules",
   ],
   "compilerOptions": {
     "allowJs": true, // 允许编译器编译JS，JSX文件

@@ -84,5 +84,10 @@
   "license": "BSD",
   "eslintConfig": {
     "extends": "./.eslintrc.js"
-  }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ]
 }

@@ -1,7 +1,7 @@
 {
   "name": "vue3-minder-editor",
   "version": "0.2.1",
-  "module": "dist/vue3-minder-editor.es.js",
+  "module": "./dist/vue3-minder-editor.es.js",
   "keywords": [
     "minder",
     "vue3",

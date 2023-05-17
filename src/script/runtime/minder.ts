@@ -12,7 +12,7 @@ const { t } = useLocale();
 
 export default function MinderRuntime(this: { selector: string; minder?: any }) {
   // 不使用 kityminder 的按键处理，由 ReceiverRuntime 统一处理
-  const Minder = window.kityminder.Minder;
+  const { Minder } = window.kityminder;
   const minder = new Minder({
     enableKeyReceiver: false,
     enableAnimation: true,

@@ -59,8 +59,8 @@ function editResource(resourceName: string) {
   if (!resourceName || !/\S/.test(resourceName)) {
     return;
   }
-  let origin = window.minder.queryCommandValue('resource');
-  let index = origin.indexOf(resourceName);
+  const origin = window.minder.queryCommandValue('resource');
+  const index = origin.indexOf(resourceName);
   // 先删除排他的标签
   if (props.distinctTags.indexOf(resourceName) > -1) {
     for (let i = 0; i < origin.length; i++) {

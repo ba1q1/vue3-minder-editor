@@ -1,5 +1,7 @@
+/* eslint-disable no-multi-assign */
 import * as key from '../tool/key';
 
+// eslint-disable-next-line no-unused-vars
 function ReceiverRuntime(this: any) {
   // 接收事件的 div
   const element = document.createElement('div');
@@ -16,11 +18,11 @@ function ReceiverRuntime(this: any) {
       return false;
     };
     let listener;
-    let jumpState;
     for (let i = 0; i < listeners.length; i++) {
       listener = listeners[i];
       // 忽略不在侦听状态的侦听器
-      if ((listener as any).notifyState != '*' && (listener as any).notifyState != this.fsm.state()) {
+      if ((listener as any).notifyState !== '*' && (listener as any).notifyState !== this.fsm.state()) {
+        // eslint-disable-next-line no-continue
         continue;
       }
 
@@ -39,7 +41,9 @@ function ReceiverRuntime(this: any) {
     enable(): void;
     disable(): void;
     fixFFCaretDisappeared(): void;
+    // eslint-disable-next-line no-unused-vars
     onblur(handler: (event: FocusEvent) => void): void;
+    // eslint-disable-next-line no-unused-vars
     listen?(state: string, listener: (event: KeyboardEvent) => boolean): void;
   }
 
@@ -68,6 +72,7 @@ function ReceiverRuntime(this: any) {
       element.blur();
       element.focus();
     },
+    // eslint-disable-next-line no-unused-vars
     onblur(handler: (event: FocusEvent) => void) {
       element.onblur = handler;
     },
@@ -83,14 +88,19 @@ function ReceiverRuntime(this: any) {
   });
 
   // 侦听器，接收到的事件会派发给所有侦听器
+  // eslint-disable-next-line no-unused-vars
   const listeners: ((event: KeyboardEvent) => boolean)[] = [];
 
   // 侦听指定状态下的事件，如果不传 state，侦听所有状态
+  // eslint-disable-next-line no-unused-vars
   receiver.listen = function (state: string, listener: ((event: KeyboardEvent) => boolean) | string) {
-    if (arguments.length == 1) {
+    if (arguments.length === 1) {
+      // eslint-disable-next-line no-param-reassign
       listener = state;
+      // eslint-disable-next-line no-param-reassign
       state = '*';
     }
+    // eslint-disable-next-line no-param-reassign
     (listener as any).notifyState = state;
     listeners.push(listener as any);
   };

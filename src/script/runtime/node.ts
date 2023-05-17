@@ -11,8 +11,10 @@ const buttons = [
   `${t('minder.menu.insert._up')}:Shift+Tab|Shift+Insert:AppendParentNode`,
 ];
 
+// eslint-disable-next-line no-unused-vars
 export default function NodeRuntime(this: { minder: any; hotbox: any; editText: Function }) {
   const { minder, hotbox } = this;
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
   const runtime = this;
 
   const main = hotbox.state('main');
@@ -33,12 +35,12 @@ export default function NodeRuntime(this: { minder: any; hotbox: any; editText: 
           AppendLock++;
           minder.execCommand(command, t('minder.main.subject.branch'));
 
-          function afterAppend() {
+          const afterAppend = () => {
             if (!--AppendLock) {
               runtime.editText();
             }
             minder.off('layoutallfinish', afterAppend);
-          }
+          };
           minder.on('layoutallfinish', afterAppend);
         } else {
           if (command.indexOf('RemoveNode') > -1) {
@@ -72,7 +74,7 @@ export default function NodeRuntime(this: { minder: any; hotbox: any; editText: 
         if (node && node.parent === null && command.indexOf('AppendSiblingNode') > -1) {
           return false;
         }
-        return minder.queryCommandState(command) != -1;
+        return minder.queryCommandState(command) !== -1;
       },
     });
   });
@@ -88,7 +90,7 @@ export default function NodeRuntime(this: { minder: any; hotbox: any; editText: 
       }
     },
     enable() {
-      return minder.queryCommandState('expand') != -1 || minder.queryCommandState('collapse') != -1;
+      return minder.queryCommandState('expand') !== -1 || minder.queryCommandState('collapse') !== -1;
     },
     beforeShow() {
       if (!minder.queryCommandState('expand')) {

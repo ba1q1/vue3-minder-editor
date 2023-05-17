@@ -9,13 +9,12 @@
 
 <script lang="ts" name="minderContainer" setup>
 import { onMounted, ref } from 'vue';
+import type { Ref } from 'vue';
 import Navigator from './navigator.vue';
 import { markChangeNode, markDeleteNode } from '../../script/tool/utils';
 import { useLocale } from '@/hooks';
 import Editor from '@/script/editor';
 import { editMenuProps, mainEditorProps, priorityProps, tagProps } from '@/props';
-
-import type { Ref } from 'vue';
 
 const { t } = useLocale();
 

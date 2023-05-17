@@ -1,6 +1,6 @@
 if (!('innerText' in document.createElement('a')) && 'getSelection' in window) {
   Object.defineProperty(HTMLElement.prototype, 'innerText', {
-    get: function () {
+    get() {
       const selection = window.getSelection();
       const ranges = [];
       let str;
@@ -21,9 +21,10 @@ if (!('innerText' in document.createElement('a')) && 'getSelection' in window) {
 
         return str;
       }
+      return '';
     },
 
-    set: function (text) {
+    set(text) {
       this.innerHTML = (text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
     },
   });

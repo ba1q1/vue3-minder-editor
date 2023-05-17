@@ -23,9 +23,13 @@ type Handler = Function & {
 
 class FSM {
   private currentState: string;
+
   private readonly BEFORE_ARROW: string = ' - ';
+
   private readonly AFTER_ARROW: string = ' -> ';
+
   private handlers: any[] = [];
+
   private debug: Debug;
 
   constructor(defaultState: string) {
@@ -116,7 +120,7 @@ class FSM {
       }
     }
     if (!whenVar) {
-      throw new Error('Illegal fsm condition: ' + condition);
+      throw new Error(`Illegal fsm condition: ${condition}`);
     }
 
     exit = resolved[0];
@@ -124,8 +128,8 @@ class FSM {
 
     (handler as any).condition = {
       when: whenVar,
-      exit: exit,
-      enter: enter,
+      exit,
+      enter,
     };
 
     this.handlers.push(handler);

@@ -1,4 +1,4 @@
-const keymap: any = {
+const keymap: Record<string, any> = {
   Shift: 16,
   Control: 17,
   Alt: 18,
@@ -56,16 +56,16 @@ const keymap: any = {
   '.': 190,
 };
 
-for (const key in keymap) {
+Object.keys(keymap).forEach((key) => {
   if (Object.prototype.hasOwnProperty.call(keymap, key)) {
     keymap[key.toLowerCase()] = keymap[key];
   }
-}
+});
 
 const aKeyCode = 65;
 const aCharCode = 'a'.charCodeAt(0);
 
-'abcdefghijklmnopqrstuvwxyz'.split('').forEach(function (letter) {
+'abcdefghijklmnopqrstuvwxyz'.split('').forEach((letter) => {
   keymap[letter] = aKeyCode + (letter.charCodeAt(0) - aCharCode);
 });
 

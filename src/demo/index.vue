@@ -12,8 +12,6 @@
 </template>
 
 <script setup lang="ts">
-import minderEditor from '@/components/minderEditor.vue';
-
 const importJson = {
   root: {
     data: {

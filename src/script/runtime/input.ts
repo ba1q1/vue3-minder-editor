@@ -28,9 +28,9 @@ function InputRuntime(this: any) {
     if (!planed.timer) {
       planed.timer = setTimeout(() => {
         const box = focusNode.getRenderBox('TextRenderer');
-        this.receiverElement.style.left = Math.round(box.x) + 'px';
-        this.receiverElement.style.top = (debug.flaged ? Math.round(box.bottom + 30) : Math.round(box.y)) + 'px';
-        //receiverElement.focus();
+        this.receiverElement.style.left = `${Math.round(box.x)}px`;
+        this.receiverElement.style.top = `${debug.flaged ? Math.round(box.bottom + 30) : Math.round(box.y)}px`;
+        // receiverElement.focus();
         planed.timer = 0;
       });
     }
@@ -188,15 +188,15 @@ function InputRuntime(this: any) {
     }
 
     let text = '';
-    const TAB_CHAR = '\t',
-      ENTER_CHAR = '\n',
-      STR_CHECK = /\S/,
-      SPACE_CHAR = '\u0020',
-      // 针对FF,SG,BD,LB,IE等浏览器下SPACE的charCode存在为32和160的情况做处理
-      SPACE_CHAR_REGEXP = new RegExp('(\u0020|' + String.fromCharCode(160) + ')'),
-      BR = document.createElement('br');
-    let isBold = false,
-      isItalic = false;
+    const TAB_CHAR = '\t';
+    const ENTER_CHAR = '\n';
+    const STR_CHECK = /\S/;
+    const SPACE_CHAR = '\u0020';
+    // 针对FF,SG,BD,LB,IE等浏览器下SPACE的charCode存在为32和160的情况做处理
+    const SPACE_CHAR_REGEXP = new RegExp(`(\u0020|${String.fromCharCode(160)})`);
+    const BR = document.createElement('br');
+    let isBold = false;
+    let isItalic = false;
 
     for (let str: ChildNodeT | string, _divChildNodes, space_l, i = 0, l = textNodes.length; i < l; i++) {
       str = textNodes[i];
@@ -291,12 +291,10 @@ function InputRuntime(this: any) {
             [].splice.apply(textNodes, [i, 1, ...[].slice.call(_divChildNodes)]);
             l = textNodes.length;
             i--;
+          } else if (str && str.textContent !== undefined) {
+            text += str.textContent;
           } else {
-            if (str && str.textContent !== undefined) {
-              text += str.textContent;
-            } else {
-              text += '';
-            }
+            text += '';
           }
           // // 其他带有样式的节点被粘贴进来，则直接取textContent，若取不出来则置空
         }
@@ -304,7 +302,7 @@ function InputRuntime(this: any) {
     }
 
     text = text.replace(/^\n*|\n*$/g, '');
-    text = text.replace(new RegExp('(\n|\r|\n\r)(\u0020|' + String.fromCharCode(160) + '){4}', 'g'), '$1\t');
+    text = text.replace(new RegExp(`(\n|\r|\n\r)(\u0020|${String.fromCharCode(160)}){4}`, 'g'), '$1\t');
     this.minder.getSelectedNode().setText(text);
     if (isBold) {
       this.minder.queryCommandState('bold') || this.minder.execCommand('bold');
@@ -332,7 +330,7 @@ function InputRuntime(this: any) {
     try {
       this.minder.decodeData('text', text).then((json: any) => {
         function importText(node: any, json: any, minder: any) {
-          const data = json.data;
+          const { data } = json;
           node.setText(data.text || '');
           const childrenTreeData = json.children || [];
           for (let i = 0; i < childrenTreeData.length; i++) {

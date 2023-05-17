@@ -1,4 +1,4 @@
-const HotBox = window.HotBox;
+const { HotBox } = window;
 
 /**
  * @Desc: 下方使用receiver.enable()和receiver.disable()通过

@@ -22,8 +22,8 @@ interface ICliboardEvent extends ClipboardEvent {
 }
 
 export default function ClipboardRuntime(this: any) {
-  const minder = this.minder;
-  const receiver = this.receiver;
+  const { minder } = this;
+  const { receiver } = this;
   const Data: IData = window.kityminder.data;
 
   if (!minder.supportClipboardEvent || window.kity.Browser.gecko) {

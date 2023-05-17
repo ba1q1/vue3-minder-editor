@@ -2,10 +2,6 @@ import { createApp } from 'vue';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import App from './demo/index.vue';
 import mindEditor from './components/minderEditor.vue';
-// import '@7polo/kity/dist/kity.js';
-// import 'hotbox-minder/hotbox.js';
-// import '@7polo/kityminder-core';
-import './script/expose-editor';
 
 const routes = [{ path: '/', name: 'demo', component: App }];
 

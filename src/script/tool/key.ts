@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 import keymap from './keymap';
 
 const CTRL_MASK = 0x1000;
@@ -21,7 +22,7 @@ function hash(unknown: string | KeyboardEvent): number {
 }
 
 function is(a: string | KeyboardEvent, b: string | KeyboardEvent): boolean {
-  return !!a && !!b && hash(a) == hash(b);
+  return !!a && !!b && hash(a) === hash(b);
 }
 
 function hashKeyEvent(keyEvent: KeyboardEvent): number {
@@ -37,7 +38,8 @@ function hashKeyEvent(keyEvent: KeyboardEvent): number {
   }
   if ([16, 17, 18, 91].indexOf(keyEvent.keyCode) === -1) {
     if (keyEvent.keyCode === 229 && keyEvent.keyIdentifier) {
-      return (hashCode |= parseInt(keyEvent.keyIdentifier.substr(2), 16));
+      hashCode |= parseInt(keyEvent.keyIdentifier.substr(2), 16);
+      return hashCode;
     }
     hashCode |= keyEvent.keyCode;
   }

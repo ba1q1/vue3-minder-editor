@@ -295,7 +295,7 @@ function navigate() {
 onMounted(() => {
   nextTick(() => {
     minder = window.minder;
-    const kity = window.kity;
+    const { kity } = window;
     // 以下部分是缩略图导航器
     previewNavigator.value = navPreviewer.value;
 

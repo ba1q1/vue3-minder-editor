@@ -3,6 +3,7 @@ import { useLocale } from '@/hooks';
 
 const { t } = useLocale();
 
+// eslint-disable-next-line no-unused-vars
 export default function TagRuntime(this: any) {
   const { minder, hotbox } = this;
   const main = hotbox.state('main');
@@ -16,7 +17,7 @@ export default function TagRuntime(this: any) {
       if (isDisableNode(minder) && !isTagEnable(minder)) {
         return false;
       }
-      return minder.queryCommandState('tag') != -1;
+      return minder.queryCommandState('tag') !== -1;
     },
   });
 

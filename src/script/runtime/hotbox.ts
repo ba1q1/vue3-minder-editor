@@ -4,11 +4,11 @@ interface Position {
 }
 
 function HotboxRuntime(this: any) {
-  const fsm = this.fsm;
-  const minder = this.minder;
-  const receiver = this.receiver;
-  const container = this.container;
-  const HotBox = window.HotBox;
+  const { fsm } = this;
+  const { minder } = this;
+  const { receiver } = this;
+  const { container } = this;
+  const { HotBox } = window;
   const hotbox = new HotBox(container);
 
   hotbox.setParentFSM(fsm);

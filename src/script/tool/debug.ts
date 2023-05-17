@@ -1,5 +1,6 @@
 import format from './format';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 function noop() {}
 
 function stringHash(str: string): number {
@@ -12,7 +13,8 @@ function stringHash(str: string): number {
 
 class Debug {
   private flaged: boolean;
-  public log: (...args: any[]) => void;
+
+  public log: () => void;
 
   constructor(flag: string) {
     this.flaged = window.location.search.indexOf(flag) !== -1;

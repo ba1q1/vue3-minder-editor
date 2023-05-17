@@ -2,7 +2,7 @@
  * Api 列表
  */
 
-export let mainEditorProps = {
+export const mainEditorProps = {
   importJson: {
     type: Object,
     default() {
@@ -36,7 +36,7 @@ export let mainEditorProps = {
   disabled: Boolean,
 };
 
-export let priorityProps = {
+export const priorityProps = {
   priorityCount: {
     type: Number,
     default: 4,
@@ -59,7 +59,7 @@ export let priorityProps = {
   operators: [],
 };
 
-export let tagProps = {
+export const tagProps = {
   tags: {
     // 自定义标签
     type: Array<string>,
@@ -78,7 +78,7 @@ export let tagProps = {
   tagEditCheck: Function,
 };
 
-export let editMenuProps = {
+export const editMenuProps = {
   sequenceEnable: {
     type: Boolean,
     default: true,
@@ -97,7 +97,7 @@ export let editMenuProps = {
   },
 };
 
-export let moleProps = {
+export const moleProps = {
   // 默认样式
   defaultMold: {
     type: Number,
@@ -105,7 +105,7 @@ export let moleProps = {
   },
 };
 
-export let delProps = {
+export const delProps = {
   delConfirm: {
     type: Function,
     default: null,

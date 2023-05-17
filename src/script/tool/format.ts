@@ -1,9 +1,10 @@
-function format(template?: string | null, args?: any) {
-  if (typeof args !== 'object') {
-    args = [].slice.call(arguments, 1);
+function format(template?: string | null, parm?: any, ...args: any[]) {
+  let tmp = parm;
+  if (typeof parm !== 'object') {
+    tmp = [].slice.call(args, 1);
   }
-  return String(template).replace(/\{(\w+)\}/gi, function (match, $key) {
-    return args[$key] || $key;
+  return String(template).replace(/\{(\w+)\}/gi, (match, $key) => {
+    return tmp[$key] || $key;
   });
 }
 export default format;

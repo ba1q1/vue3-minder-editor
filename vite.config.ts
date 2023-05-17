@@ -8,6 +8,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import replace from '@rollup/plugin-replace';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   resolve: {
@@ -60,6 +61,7 @@ export default defineConfig({
       // 将__VUE_I18N_PROD_DEVTOOLS__替换为false
       __VUE_I18N_PROD_DEVTOOLS__: false,
     }),
+    visualizer({ open: true, brotliSize: true, filename: 'report.html' }),
   ],
   optimizeDeps: {
     include: ['vue', '@vueuse/core'],

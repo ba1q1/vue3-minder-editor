@@ -1,6 +1,7 @@
 # vue3-minder-editor based on fex-team/kityminder-core
 
 > 该项目是 Vue3 版本的脑图，Vue2 版本请查看 [vue-minder-editor-plus](https://github.com/AgAngle/vue-minder-editor-plus)
+> 基于 Vue3+vite+TS+arco design 开发，支持国际化功能
 
 ## install
 
@@ -29,12 +30,15 @@ app.component(mindEditor.name, mindEditor);
     :height="height"
     :tags="tags"
     :default-mold="defaultMode"
+    :language="language"
     @save="save"
   />
+  <button @click="toggleL">切换语言</button>
 </template>
 
 <script setup lang="ts">
-  import minderEditor from 'vue3-minder-editor/src/components/minderEditor.vue';
+  import { ref } from 'vue';
+  import minderEditor from 'vue3-minder-editor';
 
   const importJson = {
     root: {
@@ -90,8 +94,19 @@ app.component(mindEditor.name, mindEditor);
   const defaultMode = 3;
   const tags = ['模块1', '用例', '前置条件', '测试步骤', '预期结果', '备注'];
 
+  const language = ref(localStorage.getItem('minder-locale') || 'zh-CN');
+
   function save(data: any) {
     console.log(data);
+  }
+
+  function toggleL() {
+    if (language.value === 'zh-CN') {
+      language.value = 'en-US';
+    } else {
+      language.value = 'zh-CN';
+    }
+    localStorage.setItem('minder-locale', language.value);
   }
 </script>
 ```

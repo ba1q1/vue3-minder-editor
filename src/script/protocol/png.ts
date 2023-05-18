@@ -1,6 +1,6 @@
 const DOMURL = window.URL || window.webkitURL || window;
 
-function downloadImage(fileURI, fileName) {
+function downloadImage(fileURI: string, fileName: string) {
   try {
     const link = document.createElement('a');
     link.href = fileURI;
@@ -13,7 +13,7 @@ function downloadImage(fileURI, fileName) {
   }
 }
 
-function loadImage(url, callback) {
+function loadImage(url: string) {
   return new Promise(function (resolve, reject) {
     const image = document.createElement('img');
     image.onload = function () {
@@ -27,7 +27,7 @@ function loadImage(url, callback) {
   });
 }
 
-function getSVGInfo(minder) {
+function getSVGInfo(minder: any) {
   const paper = minder.getPaper();
   let svgXml;
   let $svg;
@@ -87,7 +87,7 @@ function getSVGInfo(minder) {
   };
 }
 
-function exportPNGImage(minder) {
+function exportPNGImage(minder: any) {
   /* 绘制 PNG 的画布及上下文 */
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -95,7 +95,7 @@ function exportPNGImage(minder) {
   /* 尝试获取背景图片 URL 或背景颜色 */
   const bgDeclare = minder.getStyle('background').toString();
   const bgUrl = /url\((.+)\)/.exec(bgDeclare);
-  const bgColor = kity.Color.parse(bgDeclare);
+  const bgColor = window.kity.Color.parse(bgDeclare);
 
   /* 获取 SVG 文件内容 */
   const svgInfo = getSVGInfo(minder);
@@ -109,18 +109,18 @@ function exportPNGImage(minder) {
   canvas.width = width + padding * 2;
   canvas.height = height + padding * 2;
 
-  function fillBackground(ctx, style) {
+  function fillBackground(ctx: any, style: string) {
     ctx.save();
     ctx.fillStyle = style;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.restore();
   }
 
-  function drawImage(ctx, image, x, y) {
+  function drawImage(ctx: any, image: any, x: number, y: number) {
     ctx.drawImage(image, x, y);
   }
 
-  function generateDataUrl(canvas) {
+  function generateDataUrl(canvas: any) {
     try {
       const url = canvas.toDataURL('png');
       return url;
@@ -129,8 +129,8 @@ function exportPNGImage(minder) {
     }
   }
 
-  function drawSVG(minder) {
-    const mind = editor.minder.exportJson();
+  function drawSVG() {
+    const mind = window.editor.minder.exportJson();
     if (typeof window.canvg !== 'undefined') {
       return new Promise(function (resolve) {
         window.canvg(canvas, svgInfo.xml, {

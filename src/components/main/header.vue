@@ -1,7 +1,7 @@
 <template>
   <header>
-    <el-tabs v-model="activeName" class="mind_tab-content">
-      <el-tab-pane :label="t('minder.main.header.minder')" name="editMenu">
+    <a-tabs v-model="activeName" class="mind_tab-content">
+      <a-tab-pane key="editMenu" :title="t('minder.main.header.minder')">
         <div class="mind-tab-panel">
           <edit-menu
             :minder="minder"
@@ -20,13 +20,13 @@
             :del-confirm="props.delConfirm"
           />
         </div>
-      </el-tab-pane>
-      <el-tab-pane :label="t('minder.main.header.style')" name="viewMenu">
+      </a-tab-pane>
+      <a-tab-pane key="viewMenu" :title="t('minder.main.header.style')">
         <div class="mind-tab-panel">
           <view-menu :minder="minder" :default-mold="props.defaultMold" @mold-change="handleMoldChange" />
         </div>
-      </el-tab-pane>
-    </el-tabs>
+      </a-tab-pane>
+    </a-tabs>
   </header>
 </template>
 
@@ -58,10 +58,44 @@ function handleMoldChange(data: number) {
     background-repeat: no-repeat;
   }
 }
-
-.el-tabs {
-  .el-tabs__header {
-    margin-bottom: 10px;
+</style>
+<style lang="scss" scoped>
+header {
+  font-size: 12px;
+  & > ul {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    background-color: #e1e1e1;
+    li {
+      line-height: 30px;
+      display: inline-flex;
+      width: 80px;
+      height: 100%;
+      list-style: none;
+      a {
+        font-size: 14px;
+        width: inherit;
+        text-align: center;
+        text-decoration: none;
+        color: #337ab7;
+      }
+      a:hover,
+      a:focus {
+        color: #23527c;
+      }
+    }
+    li.selected {
+      background: #fff;
+      a {
+        color: #000;
+      }
+    }
   }
+}
+.arco-tabs-content {
+  padding-top: 10px;
 }
 </style>

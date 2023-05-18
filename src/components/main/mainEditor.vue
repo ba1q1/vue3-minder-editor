@@ -1,14 +1,14 @@
 <template>
   <div ref="mec" class="minder-container" :style="{ height: `${props.height}px` }">
-    <el-button :disabled="props.disabled" class="save-btn" type="primary" @click="save">{{
+    <a-button type="primary" :disabled="props.disabled" class="save-btn" @click="save">{{
       t('minder.main.main.save')
-    }}</el-button>
+    }}</a-button>
     <navigator />
   </div>
 </template>
 
 <script lang="ts" name="minderContainer" setup>
-import { onMounted, ref, inject, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import Navigator from './navigator.vue';
 import { markChangeNode, markDeleteNode } from '../../script/tool/utils';
@@ -18,7 +18,6 @@ import Editor from '@/script/editor';
 
 const { t } = useI18n();
 const props = defineProps({ ...editMenuProps, ...mainEditorProps, ...tagProps, ...priorityProps });
-const language = inject<Ref>('language');
 
 const emit = defineEmits({
   afterMount: () => ({}),

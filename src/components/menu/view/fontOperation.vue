@@ -1,31 +1,33 @@
 <template>
   <div class="font-group">
-    <el-select
+    <a-select
       v-model="fontFamilyDefaultValue"
       :placeholder="t('minder.menu.font.font')"
       class="font-family-select"
       :disabled="disabledFont"
+      size="mini"
       @change="execCommandFontFamily"
     >
-      <el-option
+      <a-option
         v-for="item in fontFamilys"
         :key="item.id"
         :label="item.name"
         :value="item.value"
         :style="{ 'font-family': item.value }"
       />
-    </el-select>
-    <el-select
+    </a-select>
+    <a-select
       v-model="fontSizeDefaultValue"
       :placeholder="t('minder.menu.font.size')"
       class="font-size-select"
       :disabled="disabledFontSize"
+      size="mini"
       @change="execCommandFontSize"
     >
-      <el-option
+      <a-option
         v-for="item in fontSizes"
         :key="item.id"
-        :label="item.label"
+        :label="item.label.toString()"
         :value="item.value"
         :style="{
           'font-size': item.value + 'px',
@@ -34,7 +36,7 @@
           padding: 0,
         }"
       />
-    </el-select>
+    </a-select>
     <span class="font-btn">
       <span
         class="font-bold menu-btn tab-icons"
@@ -254,7 +256,7 @@ function execCommandFontStyle(style: string) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .font-group {
   margin-left: 10px;
 }

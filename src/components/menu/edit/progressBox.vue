@@ -87,8 +87,7 @@ function title(index: number) {
   }
 }
 </script>
-
-<style>
+<style lang="scss" scoped>
 .progress-group li {
   background-image: url('../../../assets/minder/iconprogress.png');
 }

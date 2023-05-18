@@ -308,7 +308,7 @@ onMounted(() => {
   });
 });
 </script>
-<style>
+<style scoped>
 .nav-btn .icon {
   background: url('../../assets/minder/icons.png');
 }

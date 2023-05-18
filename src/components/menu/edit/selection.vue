@@ -1,35 +1,19 @@
 <template>
   <div class="selection-group">
-    <el-button class="tab-icons selection" @click="selectAll" />
-    <el-row class="block-col-1">
-      <el-col :span="24">
-        <el-dropdown trigger="click" :hide-on-click="true" class="dropdown-toggle menu-btn" @command="handleCommand">
-          <span class="el-dropdown-link">
-            {{ t('minder.menu.selection.all') }}
-            <el-icon><i-ep-caret-bottom /></el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu class="selection-dropdown-list">
-              <el-dropdown-item class="selection-1 dropdown-item" command="1">
-                {{ t('minder.menu.selection.invert') }}
-              </el-dropdown-item>
-              <el-dropdown-item class="selection-2 dropdown-item" command="2">
-                {{ t('minder.menu.selection.sibling') }}
-              </el-dropdown-item>
-              <el-dropdown-item class="selection-3 dropdown-item" command="3">
-                {{ t('minder.menu.selection.same') }}
-              </el-dropdown-item>
-              <el-dropdown-item class="selection-4 dropdown-item" command="4">
-                {{ t('minder.menu.selection.path') }}
-              </el-dropdown-item>
-              <el-dropdown-item class="selection-5 dropdown-item" command="5">
-                {{ t('minder.menu.selection.subtree') }}
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </el-col>
-    </el-row>
+    <a-button type="text" class="tab-icons selection" @click="selectAll" />
+    <a-dropdown :popup-max-height="false" @select="handleCommand">
+      <span class="dropdown-link">
+        {{ t('minder.menu.selection.all') }}
+        <icon-caret-down />
+      </span>
+      <template #content>
+        <a-doption value="1">{{ t('minder.menu.selection.invert') }}</a-doption>
+        <a-doption value="2">{{ t('minder.menu.selection.sibling') }}</a-doption>
+        <a-doption value="3">{{ t('minder.menu.selection.same') }}</a-doption>
+        <a-doption value="4">{{ t('minder.menu.selection.path') }}</a-doption>
+        <a-doption value="5">{{ t('minder.menu.selection.subtree') }}</a-doption>
+      </template>
+    </a-dropdown>
   </div>
 </template>
 
@@ -132,3 +116,8 @@ function handleCommand(command: string) {
   }
 }
 </script>
+<style lang="scss" scoped>
+.dropdown-link {
+  cursor: pointer;
+}
+</style>

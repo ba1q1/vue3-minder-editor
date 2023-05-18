@@ -1,38 +1,20 @@
 <template>
   <div class="expand-group">
-    <el-button class="tab-icons expand" @click="expandAll" />
-    <el-row class="block-col-1">
-      <el-col :span="24">
-        <el-dropdown trigger="click" :hide-on-click="true" class="dropdown-toggle menu-btn" @command="handleCommand">
-          <span class="el-dropdown-link">
-            {{ t('minder.menu.expand.expand') }}
-            <el-icon><i-ep-caret-bottom /></el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu class="expand-dropdown-list">
-              <el-dropdown-item class="expand-1 dropdown-item" command="1">{{
-                t('minder.menu.expand.expand_one')
-              }}</el-dropdown-item>
-              <el-dropdown-item class="expand-2 dropdown-item" command="2">{{
-                t('minder.menu.expand.expand_tow')
-              }}</el-dropdown-item>
-              <el-dropdown-item class="expand-3 dropdown-item" command="3">{{
-                t('minder.menu.expand.expand_three')
-              }}</el-dropdown-item>
-              <el-dropdown-item class="expand-4 dropdown-item" command="4">{{
-                t('minder.menu.expand.expand_four')
-              }}</el-dropdown-item>
-              <el-dropdown-item class="expand-5 dropdown-item" command="5">{{
-                t('minder.menu.expand.expand_five')
-              }}</el-dropdown-item>
-              <el-dropdown-item class="expand-6 dropdown-item" command="6">{{
-                t('minder.menu.expand.expand_six')
-              }}</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </el-col>
-    </el-row>
+    <a-button class="tab-icons expand" type="text" @click="expandAll" />
+    <a-dropdown :popup-max-height="false" @select="handleCommand">
+      <span class="dropdown-link">
+        {{ t('minder.menu.expand.expand') }}
+        <icon-caret-down />
+      </span>
+      <template #content>
+        <a-doption value="1">{{ t('minder.menu.expand.expand_one') }}</a-doption>
+        <a-doption value="2">{{ t('minder.menu.expand.expand_tow') }}</a-doption>
+        <a-doption value="3">{{ t('minder.menu.expand.expand_three') }}</a-doption>
+        <a-doption value="4">{{ t('minder.menu.expand.expand_four') }}</a-doption>
+        <a-doption value="5">{{ t('minder.menu.expand.expand_five') }}</a-doption>
+        <a-doption value="6">{{ t('minder.menu.expand.expand_six') }}</a-doption>
+      </template>
+    </a-dropdown>
   </div>
 </template>
 
@@ -49,3 +31,8 @@ function expandAll() {
   window.minder?.execCommand('ExpandToLevel', 9999);
 }
 </script>
+<style lang="scss" scoped>
+.dropdown-link {
+  cursor: pointer;
+}
+</style>

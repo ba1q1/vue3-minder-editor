@@ -1,24 +1,27 @@
 ﻿<template>
   <div :disabled="commandDisabled">
-    <el-button type="info" class="delete-btn" :icon="Delete" circle @click="execCommand()" />
+    <a-button class="delete-btn" shape="circle" @click="execCommand()">
+      <template #icon>
+        <icon-delete />
+      </template>
+    </a-button>
     <template v-for="(item, pIndex) in priorityCount + 1">
-      <el-button
+      <a-button
         v-if="pIndex != 0"
         :key="item"
-        type="info"
         class="priority-btn"
         :class="'priority-btn_' + pIndex"
         size="small"
         @click="execCommand(pIndex)"
-        >{{ priorityPrefix }}{{ priorityStartWithZero ? pIndex - 1 : pIndex }}</el-button
       >
+        {{ priorityPrefix }}{{ priorityStartWithZero ? pIndex - 1 : pIndex }}
+      </a-button>
     </template>
   </div>
 </template>
 
 <script lang="ts" name="sequenceBox" setup>
-import { computed, onMounted, reactive, nextTick, ref } from 'vue';
-import { Delete } from '@element-plus/icons-vue';
+import { onMounted, reactive, nextTick, ref } from 'vue';
 import { isDisableNode, setPriorityView } from '@/script/tool/utils';
 import { priorityProps } from '@/props';
 
@@ -77,7 +80,8 @@ function execCommand(index?: number) {
   }
 }
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
 .delete-btn {
   height: 23px;
   width: 23px;
@@ -87,16 +91,6 @@ function execCommand(index?: number) {
     width: 1em !important;
     height: 1em !important;
   }
-}
-
-.el-button {
-  .el-icon-delete {
-    font-size: 4px;
-  }
-}
-
-.el-button + .el-button {
-  margin-left: 0px;
 }
 
 .priority-btn {

@@ -1,12 +1,12 @@
 <template>
   <div :disabled="commandDisabled">
-    <el-tag
+    <a-tag
       v-for="item in props.tags"
       :key="item"
       size="small"
       :color="getResourceColor(item)"
       @click="editResource(item)"
-      >{{ item }}</el-tag
+      >{{ item }}</a-tag
     >
   </div>
 </template>
@@ -70,7 +70,7 @@ function editResource(resourceName: string) {
       }
     }
   }
-  if (index != -1) {
+  if (index !== -1) {
     origin.splice(index, 1);
   } else {
     origin.push(resourceName);
@@ -79,18 +79,18 @@ function editResource(resourceName: string) {
 }
 </script>
 
-<style lang="scss">
-.el-tag {
+<style lang="scss" scoped>
+.arco-tag {
   margin-right: 4px;
   border: 0px;
   color: black;
 }
 
-.el-tag:hover {
+.arco-tag:hover {
   cursor: pointer;
 }
 
-.el-tag:first-child {
+.arco-tag:first-child {
   margin-left: 4px;
 }
 .add-btn {

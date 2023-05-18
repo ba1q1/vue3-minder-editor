@@ -25,7 +25,7 @@ function handleMoldChange(data: number) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .menu-container {
   height: 60px;
   i {

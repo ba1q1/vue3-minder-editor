@@ -1,40 +1,5 @@
 @import "mixin.scss";
 @import "dropdown-list.scss";
-header {
-  font-size: 12px;
-  & > ul {
-    display: flex;
-    align-items: center;
-    height: 30px;
-    margin: 0;
-    padding: 0;
-    background-color: #e1e1e1;
-    li {
-      line-height: 30px;
-      display: inline-flex;
-      width: 80px;
-      height: 100%;
-      list-style: none;
-      a {
-        font-size: 14px;
-        width: inherit;
-        text-align: center;
-        text-decoration: none;
-        color: #337ab7;
-      }
-      a:hover,
-      a:focus {
-        color: #23527c;
-      }
-    }
-    li.selected {
-      background: #fff;
-      a {
-        color: #000;
-      }
-    }
-  }
-}
 
 .mind-tab-panel {
   width: 100%;
@@ -46,7 +11,6 @@ header {
       overflow: hidden;
       align-items: center;
       flex-wrap: wrap;
-      height: 100%;
       border-right: 1px dashed #eee;
     }
     & > div:last-of-type {
@@ -130,9 +94,6 @@ header {
   .attachment-group {
     width: 185px;
     @include flexcenter;
-    .el-dropdown-link {
-      font-size: 12px;
-    }
     button {
       font-size: inherit;
       width: 45px;
@@ -175,9 +136,6 @@ header {
         background-position: 50% -1150px;
       }
     }
-    .el-dropdown {
-      cursor: default;
-    }
   }
   .progress-group,
   .sequence-group {
@@ -207,30 +165,6 @@ header {
     @for $i from 0 through 9 {
       .progress-#{$i} {
         background-position: 0 -20px * (-1 + $i);
-      }
-    }
-  }
-  .mold-group {
-    width: 80px;
-    @include flexcenter;
-    @for $i from 1 through 6 {
-      .mold-#{$i} {
-        background-position: (1 - $i) * 50px 0;
-      }
-    }
-    .dropdown-toggle {
-      display: block;
-      width: 50px;
-      height: 50px;
-      margin: 5px 0 0 auto;
-      span {
-        display: inline-block;
-        @include block;
-        i {
-          position: absolute;
-          right: -20px;
-          bottom: -5px;
-        }
       }
     }
   }
@@ -288,24 +222,11 @@ header {
     * {
       font-size: 12px;
     }
-    input {
-      height: 30px !important;
-    }
     .font-family-select {
-      input {
-        width: 100px;
-      }
-      .el-input__suffix {
-        top: 12px;
-      }
+      width: 150px;
     }
     .font-size-select {
-      input {
-        width: 30px;
-      }
-      .el-input__suffix {
-        top: 12px;
-      }
+      width: 80px;
       margin-left: 5px;
     }
     .font-bold,

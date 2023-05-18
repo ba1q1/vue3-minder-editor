@@ -38,7 +38,7 @@
   </div>
 </template>
 <script lang="ts" name="minderEditor" setup>
-import { onMounted, watchEffect, provide, computed, ref } from 'vue';
+import { onMounted, watchEffect, provide, computed } from 'vue';
 import headerMenu from './main/header.vue';
 import mainEditor from './main/mainEditor.vue';
 import { editMenuProps, mainEditorProps, moleProps, priorityProps, tagProps, delProps } from '../props';
